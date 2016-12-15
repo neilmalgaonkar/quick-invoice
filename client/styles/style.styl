@@ -1,0 +1,73 @@
+@import '_normalize.styl'
+@import '_typography.styl'
+@import  '_mixins.styl'
+@import '_form.styl'
+@import '../../node_modules/react-datepicker/dist/react-datepicker.css'
+
+body
+    background-color offwhite
+    font-family droid
+
+.site-title
+  font-family lobster
+  text-align center
+  font-weight 100
+  font-size 13rem
+  margin 2rem 0
+  letter-spacing -1px
+  text-shadow 0px 4px 0 rgba(18, 86, 136, 0.11)
+  color blue
+  a
+    color blue
+    text-decoration none
+    &:focus
+      outline 0
+
+.rtl
+    text-align right
+
+.container
+    clearfix
+    width 100%
+    max-width 100rem
+    padding 0 2rem
+    box-sizing border-box
+    margin 0 auto
+
+    .main-content
+        background-color #fff
+        width 100%
+        border-radius .4rem
+
+.button
+    padding 1rem 1.5rem
+    background-color blue
+    color white
+    font-family droid
+    font-size 1.3rem
+    border-radius .4rem
+    text-decoration none
+    border none
+
+ .table-row, .table-header
+    background-color #353940
+    border-radius .4rem
+    display inline-block
+    width 100%
+
+    .th, .td
+        display inline-block
+        vertical-align top
+        padding 1rem
+        font-family droid
+        font-size 1.5rem
+        line-height 1.5
+        color #fff
+
+.table-row
+        background-color transparent
+        position relative
+
+@import '_invoice.styl'
+@import '_entries.styl'
+@import '_list.styl'
