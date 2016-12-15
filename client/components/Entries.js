@@ -31,7 +31,7 @@ class Entries extends React.Component {
         if(this.props.entries[this.props.invoiceid] === undefined) {
             return;
         }
-        return this.props.entries[this.props.invoiceid].map((entry, index) => <Entry key={index} index={index} entry={entry} removeItem={this.removeItem.bind(this)} {...this.props}/>)
+        return this.props.entries[this.props.invoiceid].map((entry, index) => <Entry key={index} index={index} entry={entry} {...this.props}/>)
     }
 
     render() {

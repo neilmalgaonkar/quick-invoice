@@ -7,7 +7,8 @@ class Entry extends React.Component {
 
     remove(e) {
         e.preventDefault()
-        this.props.removeItem(this.props.index);
+        // this.props.removeItem(this.props.index);
+        this.props.removeEntry(this.props.invoiceid, this.props.index)
     }
 
     updateEntry() {

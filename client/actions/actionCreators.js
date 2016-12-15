@@ -71,10 +71,10 @@ export function updateEntry(invoiceid, entry, index) {
     }
 }
 
-export function removeEntry(invoiceno, index) {
+export function removeEntry(invoiceid, index) {
     return {
         type: 'REMOVE_ENTRY',
-        invoiceno,
+        invoiceid,
         index
     }
 }
