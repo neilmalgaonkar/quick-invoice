@@ -56,7 +56,7 @@ class Entries extends React.Component {
                     <div className="amount-table">
                         <div className="table-row">
                             <div className="col1"><label>Subtotal</label></div>
-                            <div className="col2"><div className="currency-cont">{this.props.subtotal}</div></div>
+                            <div className="col2"><div className="currency-cont">{this.props.subtotal}<span className="currency">{this.props.invoice.currency}</span></div></div>
                         </div>
                         <div className="table-row">
                             <div className="col1"><label>Discount</label></div>
@@ -68,7 +68,7 @@ class Entries extends React.Component {
                         </div>
                         <div className="table-row">
                             <div className="col1"><label>Total Amount</label></div>
-                            <div className="col2"><div className="currency-cont">{this.props.total}</div></div>
+                            <div className="col2"><div className="currency-cont">{this.props.total}<span className="currency">{this.props.invoice.currency}</span></div></div>
                         </div>
                     </div>
                 </div>

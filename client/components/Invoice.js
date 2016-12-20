@@ -1,6 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+import _ from 'lodash'
+
 import { Link } from 'react-router'
 
 import DatePicker from 'react-datepicker'
@@ -27,7 +29,6 @@ class Invoice extends React.Component {
     }
 
     updateInvoiceState() {
-        console.log(this.logo)
         let entriesCont = this.refs.entriesCont.refs;
         let logoSelected = (this.logo.path === "") ? false : true
         this.invoiceData = {
@@ -41,12 +42,18 @@ class Invoice extends React.Component {
             to: this.refs.to.value,
             notes: this.refs.notes.value,
             terms: this.refs.termsText.value,
+            currency: this.refs.currency.value,
             tax: entriesCont.tax.value,
             discount: entriesCont.discount.value,
             entries: this.props.entries[this.props.invoiceid],
             subtotal: this.subtotal(),
             total: this.totalAmount()
         }
+    }
+
+    autoSave(e) {
+        _.throttle(this.saveInvoice.bind(this), 100)(e)
+
     }
 
     handleFieldUpdates() {
@@ -56,6 +63,7 @@ class Invoice extends React.Component {
 
     saveInvoice(e) {
         e.preventDefault()
+        console.log("calling auto save")
         this.updateInvoiceState()
         this.props.storeInvoice(this.invoiceData, this.props.invoiceid)
     }
@@ -157,7 +165,7 @@ class Invoice extends React.Component {
     render() {
         return (
             <div className="invoice-container">
-                <form ref="invoiceForm" className="invoice-form" onChange={this.updateInvoiceState.bind(this)} onSubmit={this.saveInvoice.bind(this)}>
+                <form ref="invoiceForm" className="invoice-form" onChange={this.autoSave.bind(this)} onSubmit={this.saveInvoice.bind(this)}>
                     <div className="header-cont">
                         <Link to="/" className="button goto-home" >&lt; Back</Link>
                         <h1 className="header">Invoice</h1>
@@ -183,12 +191,12 @@ class Invoice extends React.Component {
                         <div className="row">
                             <div className="col1">
                                 <div className="field-grp">
-                                    <label for="invoiceNo" className="field-label">Invoice No</label>
+                                    <label htmlFor="invoiceNo" className="field-label">Invoice No</label>
                                     <input id="inviceNo" type="text" className="input" ref="invoiceNo" placeholder="Invoice Number" defaultValue={this.props.invoice.invoiceNo}/>
                                 </div>
                             </div><div className="col2">
                                 <div className="field-grp">
-                                    <label for="invoiceTerms" className="field-label">Invoice Terms</label>
+                                    <label htmlFor="invoiceTerms" className="field-label">Invoice Terms</label>
                                     <input type="text" className="input" ref="invoiceTerms" id="invoiceTerms" placeholder="Invoice Terms" defaultValue={this.props.invoice.invoiceTerms}/>
                                 </div>
                             </div>
@@ -209,15 +217,24 @@ class Invoice extends React.Component {
                         <div className="row">
                             <div className="col1">
                                 <div className="field-grp">
-                                    <label for="from" className="field-label">From</label>
+                                    <label htmlFor="from" className="field-label">From</label>
                                     <textarea ref="from" placeholder="Invoice from? (required)" id="from" defaultValue={this.props.invoice.from}></textarea>
                                 </div>
                             </div><div className="col2">
                                 <div className="field-grp">
-                                    <label for="to" className="field-label">To</label>
+                                    <label htmlFor="to" className="field-label">To</label>
                                     <textarea ref="to" id="to" placeholder="Invoice to? (required)" defaultValue={this.props.invoice.to}></textarea>
                                 </div>
                             </div>
+                        </div>
+                        <div className="row">
+                            <div className="col1">
+                                <div className="field-grp">
+                                    <label htmlFor="currency" className="field-label">Currency</label>
+                                    <input type="text" className="input" ref="currency" id="currency" placeholder="Invoice Currency" defaultValue={this.props.invoice.currency}/>
+                                </div>
+                            </div>
+                            <div className="col2"></div>
                         </div>
                     </div>
                     <div className="invoice-entries">
@@ -225,11 +242,11 @@ class Invoice extends React.Component {
                     </div>
                     <div className="invoice-info-footer">
                         <div className="field-grp">
-                            <label for="notes" className="field-label"> Notes</label>
+                            <label htmlFor="notes" className="field-label"> Notes</label>
                             <textarea ref="notes" id="notes" placeholder="Notes for invoice" defaultValue={this.props.invoice.notes}></textarea>
                         </div>
                         <div className="field-grp">
-                            <label for="termsText" className="field-label">Terms</label>
+                            <label htmlFor="termsText" className="field-label">Terms</label>
                             <textarea ref="termsText" id="termsText" placeholder="Terms for invoice" defaultValue={this.props.invoice.terms}></textarea>
                         </div>
                     </div>

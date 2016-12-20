@@ -29,7 +29,7 @@ class Entry extends React.Component {
                 <div className="td col-item"><input type="text" ref={"description_" + this.props.index} placeholder="Item description" defaultValue={this.props.entry.description} onChange={this.updateEntry.bind(this)}/></div>
                 <div className="td col-quantity"><input type="number" step="any" ref={"quantity_" + this.props.index} placeholder="Quantity" defaultValue={this.props.entry.quantity} onChange={this.updateEntry.bind(this)}/></div>
                 <div className="td col-rate"><input type="number" step="any" ref={"rate_" + this.props.index} placeholder="Rate" defaultValue={this.props.entry.rate} onChange={this.updateEntry.bind(this)}/></div>
-                <div className="td col-amount"><span className="amount">{this.props.entry.amount}</span></div>
+                <div className="td col-amount"><div className="currency-cont">{this.props.entry.amount}<span className="currency">{this.props.invoice.currency}</span></div></div>
             </div>
         );
     }

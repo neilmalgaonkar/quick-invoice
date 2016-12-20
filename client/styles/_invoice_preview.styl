@@ -79,6 +79,9 @@
             text-align right
             padding-right .5rem
             width 50%
+            .text
+                font-weight bold
+                font-style italic
 
     .invoice-entry-table
         clearfix()
@@ -92,22 +95,51 @@
             .td
                 font-size 1.3rem
                 padding .8rem 1rem
+                line-height 1.7
+
+            .th,.td
+                .th-span
+                    display block
+                    width 100%
+                    text-align right
+                    padding-right 0
+                &.col-item
+                    span
+                        text-align left
+
+            .td-span
+                display block
+                width 100%
+                text-align right
+
+
             .td
                 color textcolor
 
             .col-item
-                width 50%
+                width 46%
+
+            .col-quantity
+                width 12%
 
             .col-rate
-            .col-quantity
-                width 20%
+                width 16%
 
             .col-amount
-                width 10%
+                width 26%
         .table-row
             background-color #fff
             &:nth-child(2n+1)
                 background-color #eee
+
+        .currency-cont
+            float right
+            padding-right 0rem
+            font-size 1.3rem
+            line-height 1.7
+
+            .currency
+                top 0
 
     .invoice-summary-info
         clearfix()
