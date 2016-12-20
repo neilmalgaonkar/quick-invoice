@@ -11,8 +11,10 @@ class Popup extends React.Component {
     }
 
     closeOverlayOnEsc(e) {
-        if(e.keyCode === 27) {
-            this.closeOverlay(e)
+        if(this.props.ui.overlay) {
+            if(e.keyCode === 27) {
+                this.closeOverlay(e)
+            }
         }
     }
 
