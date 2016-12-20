@@ -1,0 +1,116 @@
+.invoice-popup-data
+    width 100rem
+    padding 2rem 4rem
+    box-sizing border-box
+
+    .hr
+        width 100%
+        height .1rem
+        background-color #000
+        margin .2rem 0
+        display inline-block
+
+    .invoice-header
+        font-family droid
+        font-size 3.4rem
+        display block
+        text-align center
+        margin 0 0 1.2rem
+        color #000
+        letter-spacing .07rem
+        font-weight normal
+
+    .label
+        font-size 1.4rem
+        display inline-block
+        margin-bottom 1rem
+        color textcolor
+        letter-spacing .07rem
+
+    .text
+        font-size 1.3rem
+        line-height 2rem
+        white-space pre-line
+        letter-spacing .07rem
+
+    .invoice-preview-row
+        clearfix()
+        width 100%
+        margin 2rem 0 0
+
+    .address
+        float left
+        margin-left 1.5rem
+        &.to
+            margin-right 1.5rem
+            float right
+        .text
+            max-width 22rem
+
+    .from-logo-cont
+        float left
+        margin-left 4rem
+
+    .invoice-meta-info
+        float right
+        width 35rem
+        margin-top 2rem
+
+        .text
+            margin-bottom 0
+
+        .meta-row
+            display inline-block
+            width 100%
+            margin-bottom .5rem
+            background-color #eee
+            &:nth-child(2n+1)
+                background-color #fff
+
+        .col1
+        .col2
+            display inline-block
+            box-sizing border-box
+            padding 0.7rem 1rem
+
+        .col1
+            width 50%
+        .col2
+            text-align right
+            padding-right .5rem
+            width 50%
+
+    .invoice-entry-table
+        clearfix()
+        margin-top 3.2rem
+        .table-header
+        .table-row
+            clearfix()
+            width 100%
+            border-radius 0
+            .th
+            .td
+                font-size 1.3rem
+                padding .8rem 1rem
+            .td
+                color textcolor
+
+            .col-item
+                width 50%
+
+            .col-rate
+            .col-quantity
+                width 20%
+
+            .col-amount
+                width 10%
+        .table-row
+            background-color #fff
+            &:nth-child(2n+1)
+                background-color #eee
+
+    .invoice-summary-info
+        clearfix()
+        margin-top 3rem
+        .invoice-meta-info
+            margin-top 1rem

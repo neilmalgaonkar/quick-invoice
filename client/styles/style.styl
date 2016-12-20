@@ -1,6 +1,6 @@
+@import '_mixins.styl'
 @import '_normalize.styl'
 @import '_typography.styl'
-@import  '_mixins.styl'
 @import '_form.styl'
 @import '../../node_modules/react-datepicker/dist/react-datepicker.css'
 @import '_calendar_reskinning.styl'
@@ -8,6 +8,55 @@
 body
     background-color offwhite
     font-family droid
+
+.overlay
+    display none
+    position fixed
+    left 0
+    right 0
+    top 0
+    bottom 0
+    z-index 100
+    background-color rgba(255, 255, 255, 0.7)
+
+.overlay-open
+    .overlay
+        display block
+
+    .overlay-cls-btn
+        display block
+
+.popup
+    display none
+    position absolute
+    z-index 110
+    left 50%
+    top 7rem
+    translateXY -50% 0
+
+    .overlay-cls-btn
+        position absolute
+        right 1.3rem
+        top 1.3rem
+        width 2.8rem
+        height 2.8rem
+        font-size 1.5rem
+        line-height 2.6rem
+        z-index 1
+
+    &.show-popup
+        display block
+
+        .overlay-cls-btn
+            display block
+
+    .popup-container
+        position relative
+
+    .popup-data
+        border-radius .3rem
+        background-color white
+        box-shadow 0 0 5rem .11rem rgba(0, 0, 0, .7)
 
 .site-title
   font-family lobster
@@ -66,9 +115,24 @@ body
         color #fff
 
 .table-row
-        background-color transparent
-        position relative
+    background-color transparent
+    position relative
+
+.cls-btn
+    text-decoration none
+    display inline-block
+    vertical-align center
+    background-color blue
+    color #fff
+    font-family droid
+    font-size 1rem
+    line-height 1.8
+    text-align center
+    border-radius 100rem
+    width 1.8rem
+    height 1.8rem
 
 @import '_invoice.styl'
 @import '_entries.styl'
 @import '_list.styl'
+@import '_invoice_preview.styl'

@@ -1,6 +1,8 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
+
 import { Link } from 'react-router'
-import Invoice from './Invoice'
+import Popup from './Popup'
 
 class Main extends React.Component {
 
@@ -10,11 +12,16 @@ class Main extends React.Component {
 
     render() {
         return (
-            <div>
-                <h1 className="site-title"><Link to="/">Quick Invoice!</Link></h1>
-                <div className="container">
-                    <div className="main-content">
-                        {React.cloneElement(this.props.children, this.props)}
+            <div className={((this.props.ui.overlay) ? 'overlay-open' : 'overlay-close')}>
+                <div className="overlay">
+                </div>
+                <Popup {...this.props}/>
+                <div>
+                    <h1 className="site-title"><Link to="/">Quick Invoice!</Link></h1>
+                    <div className="container">
+                        <div className="main-content">
+                            {React.cloneElement(this.props.children, this.props)}
+                        </div>
                     </div>
                 </div>
             </div>

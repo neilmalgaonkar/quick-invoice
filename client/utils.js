@@ -5,8 +5,8 @@ export function getLocalyStoredData() {
         let invoices = localStorage.getItem("invoices")
         let entries = localStorage.getItem("entries")
         return {
-            invoices: JSON.parse(invoices),
-            entries: JSON.parse(entries)
+            invoices: (invoices === null) ? [] : JSON.parse(invoices),
+            entries: (entries === null) ? {} : JSON.parse(entries)
         }
     } catch(err) {
         return {

@@ -5,7 +5,10 @@ import Entry from './Entry';
 class Entries extends React.Component {
     constructor(props) {
         super(props)
-        if(props.entries[props.invoiceid] === undefined) {
+    }
+
+    componentWillMount() {
+        if(this.props.entries[this.props.invoiceid] === undefined) {
             this.addItem();
         }
     }

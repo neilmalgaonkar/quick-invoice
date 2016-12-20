@@ -8,7 +8,8 @@ import * as actions from './../actions/actionCreators'
 const mapStateToProps = (state) => {
     return {
         invoices: state.invoices,
-        entries: state.entries
+        entries: state.entries,
+        ui: state.ui
     }
 }
 

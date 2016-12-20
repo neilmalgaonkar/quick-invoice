@@ -78,3 +78,9 @@ export function removeEntry(invoiceid, index) {
         index
     }
 }
+
+export function toggleOverlay() {
+    return {
+        type: 'TOGGLE_OVERLAY'
+    }
+}

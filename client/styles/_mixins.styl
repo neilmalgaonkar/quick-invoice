@@ -1,4 +1,4 @@
-.clearfix()
+clearfix()
     zoom 1
     &:before
     &:after
@@ -7,12 +7,12 @@
     &:after
         clear both
 
-.border-radius(radius)
+border-radius(radius)
     border-radius radius
     -moz-border-radius radius
     -webkit-border-radius radius
 
-.placeholder(color)
+placeholder(color)
     &::-webkit-input-placeholder
         color color
 
@@ -24,3 +24,14 @@
 
     &:-ms-input-placeholder
         color color
+
+translateXY(x, y)
+    -webkit-transform translateX(x) translateY(y)
+    -moz-transform translateX(x) translateY(y)
+    transform translateX(x) translateY(y)
+
+box-shadow(args...)
+    -webkit-box-shadow args
+    -moz-box-shadow args
+    box-shadow args
+

@@ -11,7 +11,6 @@ import css from './styles/style.styl';
 import store, { history } from './store'
 
 import App from './components/App';
-
 import List from './components/List'
 import InvoiceContainer from './components/InvoiceContainer'
 
@@ -20,7 +19,7 @@ render((
         <Router history={history}>
             <Route path="/" component={App}>
                 <IndexRoute component={List}></IndexRoute>
-                <Route path="/new" component={InvoiceContainer}></Route>
+                <Route path="/new/:invoiceid" component={InvoiceContainer}></Route>
                 <Route path="/invoice/:invoiceid" component={InvoiceContainer}></Route>
             </Route>
         </Router>

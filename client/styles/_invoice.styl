@@ -8,23 +8,78 @@
         margin-bottom 2rem
 
     .header
-        font-size 2.8rem
+        font-size 3.2rem
         text-align center
         margin 1rem 0 0 1rem
         vertical-align top
         width 100%
 
-    .save-invoice
+    .invoice-btn-cont
         position absolute
         right 1rem
         top 1rem
-        // margin 1rem 1rem 0 0
+
+    .save-invoice
+    .preview-invoice
+        display inline-block
+
+    .preview-invoice
+        margin-right 1.5rem
+        background-color #b32b2b
+
 
     .goto-home
         position absolute
         left 1rem
         top 1rem
         background-color red
+
+    .logo-placeholder
+        display inline-block
+        width 20rem
+        height 20rem
+        background-color #f5f5f5
+        border: 1px solid rgba(0, 0, 0, .1)
+        margin-left 1rem
+        position relative
+        text-align center
+        cursor pointer
+
+        .upload-btn-text
+            position absolute
+            left 50%
+            top 50%
+            font-family droid
+            font-size 1.7rem
+            color #777
+            translateXY -50% -50%
+
+        &:hover
+            background-color #efefef
+
+        .img-cont
+            position relative
+            width 100%
+            height 100%
+
+        .logo
+            position absolute
+            z-index 1
+            left 50%
+            top 50%
+            translateXY -50% -50%
+
+         .cls-btn
+             position absolute
+             top .5rem
+             right .5rem
+             z-index 10
+
+        .logo-upload-btn
+            position absolute
+            z-index -999
+            opacity 0
+
 
 .invoice-form
     margin-top .8rem
