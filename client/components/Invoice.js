@@ -4,12 +4,12 @@ import ReactDOM from 'react-dom'
 import _ from 'lodash'
 
 import { Link } from 'react-router'
-
-import DatePicker from 'react-datepicker'
 import Moment from 'moment'
 
+import DatePicker from 'react-datepicker'
 import Entries from './Entries'
 import InvoicePreview from './InvoicePreview'
+import LabelInputField from './LabelInputField'
 
 class Invoice extends React.Component {
 
@@ -18,7 +18,7 @@ class Invoice extends React.Component {
         this.state = {
             invoiceDate: this.props.invoice.invoiceDate,
             invoiceDueDate: this.props.invoice.invoiceDueDate
-        };
+        }
         this.invoiceDate = {}
         let defaultLogoData = {
             path: "",
@@ -32,7 +32,7 @@ class Invoice extends React.Component {
         let entriesCont = this.refs.entriesCont.refs;
         let logoSelected = (this.logo.path === "") ? false : true
         this.invoiceData = {
-            invoiceNo: this.refs.invoiceNo.value,
+            invoiceNo: this.refs.invoiceNoRef.refs.labelField.value,
             invoiceTerms: this.refs.invoiceTerms.value,
             invoiceDate: this.state.invoiceDate,
             invoiceDueDate: this.state.invoiceDueDate,
@@ -43,8 +43,8 @@ class Invoice extends React.Component {
             notes: this.refs.notes.value,
             terms: this.refs.termsText.value,
             currency: this.refs.currency.value,
-            tax: entriesCont.tax.value,
-            discount: entriesCont.discount.value,
+            tax: entriesCont.taxRef.refs.labelField.value,
+            discount: entriesCont.discountRef.refs.labelField.value,
             entries: this.props.entries[this.props.invoiceid],
             subtotal: this.subtotal(),
             total: this.totalAmount()
@@ -53,7 +53,6 @@ class Invoice extends React.Component {
 
     autoSave(e) {
         _.throttle(this.saveInvoice.bind(this), 100)(e)
-
     }
 
     handleFieldUpdates() {
@@ -116,7 +115,6 @@ class Invoice extends React.Component {
             fr.onload = (fileLoadedEvent) => {
                 let data = fileLoadedEvent.target.result
                 image.onload = () => {
-                    // console.log(image.width, image.height)
                     let dimensions = this._resize(image)
                     self.logo = {
                         path: data,
@@ -192,7 +190,8 @@ class Invoice extends React.Component {
                             <div className="col1">
                                 <div className="field-grp">
                                     <label htmlFor="invoiceNo" className="field-label">Invoice No</label>
-                                    <input id="inviceNo" type="text" className="input" ref="invoiceNo" placeholder="Invoice Number" defaultValue={this.props.invoice.invoiceNo}/>
+                                    <LabelInputField ref="invoiceNoRef" position="left" fieldType="text" labelText="#" contClass="invoice-no-field-cont" value={this.props.invoice.invoiceNo}/>
+                                    {/*<input id="inviceNo" type="text" className="input" ref="invoiceNo" placeholder="Invoice Number" defaultValue={this.props.invoice.invoiceNo}/>*/}
                                 </div>
                             </div><div className="col2">
                                 <div className="field-grp">

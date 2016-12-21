@@ -18,9 +18,65 @@ form
 .react-datepicker__input-container
     width 100%
 
-input[type=text],
-input[type=date],
-input[type=email],
+
+.input-field-cont
+    display inline-block
+    width 100%
+    border .25rem solid #eee
+    border-radius .4rem
+    position relative
+    .input-label
+        position absolute
+        line-height 2.2rem
+        font-size 1rem
+        font-family droid
+        background-color #e6e6e6
+        padding 1rem 1.2rem
+        color textcolor
+        text-align center
+        top -.1rem
+        bottom -.1rem
+        box-sizing border-box
+    .input
+        border none
+
+    &.left
+        .input-label
+            custom-border-radius .4rem 0 0 .4rem
+            left -.1rem
+    &.right
+        .input-label
+            custom-border-radius 0 .4rem .4rem 0
+            right -.1rem
+        .input
+            text-align right
+
+.invoice-no-field-cont
+    padding-left 3rem
+    .input-label
+        width 3.4rem
+
+.discount-field-cont
+.tax-field-cont
+    padding-right 3rem
+    .input-label
+        width 3.4rem
+
+.entry-quantity-cont-field
+    padding-right 3.4rem
+    .input-label
+        width 3.8rem
+
+.entry-rate-cont-field
+    padding-right 3.2rem
+    .input-label
+        width 3.8rem
+        font-size .9rem
+        color textcolor
+
+input[type=text]
+input[type=date]
+input[type=email]
 input[type=number]
     width 100%
     padding 1rem 1.1rem
@@ -31,6 +87,7 @@ input[type=number]
     outline none
     border .25rem solid #eee
     color textcolor
+    box-sizing border-box
     line-height 2rem
 
 input[type=date]

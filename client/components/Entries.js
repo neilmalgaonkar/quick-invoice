@@ -1,6 +1,7 @@
 import React from 'react'
 
 import Entry from './Entry';
+import LabelInputField from './LabelInputField'
 
 class Entries extends React.Component {
     constructor(props) {
@@ -60,11 +61,17 @@ class Entries extends React.Component {
                         </div>
                         <div className="table-row">
                             <div className="col1"><label>Discount</label></div>
-                            <div className="col2"><input type="text" ref="discount" className="rtl" defaultValue={this.props.invoice.discount} onChange={this.props.handleFieldUpdates} /></div>
+                            <div className="col2">
+                                {/*<input type="text" ref="discount" className="rtl" defaultValue={this.props.invoice.discount} onChange={this.props.handleFieldUpdates} />*/}
+                                <LabelInputField ref="discountRef" position="right" fieldType="text" labelText="%" contClass="discount-field-cont" value={this.props.invoice.discount}/>
+                            </div>
                         </div>
                         <div className="table-row">
                             <div className="col1"><label>Tax</label></div>
-                            <div className="col2"><input type="text" ref="tax" className="rtl" defaultValue={this.props.invoice.tax} onChange={this.props.handleFieldUpdates}/></div>
+                            <div className="col2">
+                                {/*<input type="text" ref="tax" className="rtl" defaultValue={this.props.invoice.tax} onChange={this.props.handleFieldUpdates}/>*/}
+                                <LabelInputField ref="taxRef" position="right" fieldType="text" labelText="%" value={this.props.invoice.tax} contClass="tax-field-cont"/>
+                            </div>
                         </div>
                         <div className="table-row">
                             <div className="col1"><label>Total Amount</label></div>

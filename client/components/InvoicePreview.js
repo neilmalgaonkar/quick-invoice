@@ -13,7 +13,7 @@ class InvoicePreivew extends React.Component {
             return (
                 <div className="table-row" key={i}>
                     <div className="col-item td"><span className="td-span">{entry.description}</span></div>
-                    <div className="col-quantity td"><span className="td-span">{entry.quantity}</span></div>
+                    <div className="col-quantity td"><span className="td-span">{entry.quantity} hrs</span></div>
                     <div className="col-rate td"><div className="currency-cont">{entry.rate}<span className="currency">{this.invoice.currency}</span></div></div>
                     <div className="col-amount td"><div className="currency-cont">{entry.amount}<span className="currency">{this.invoice.currency}</span></div></div>
                 </div>
