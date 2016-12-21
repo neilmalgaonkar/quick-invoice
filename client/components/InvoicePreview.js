@@ -101,6 +101,32 @@ class InvoicePreivew extends React.Component {
                         <p className="text">{this.invoice.terms}</p>
                     </div>
                 </div>
+                <div className="invoice-preview-row stub-preview-row">
+                    <span className="hr"></span>
+                    <h1 className="stub-header">payment stub</h1>
+                    <div className="address from">
+                        <span className="label">From :</span>
+                        <p className="text">{this.invoice.from}</p>
+                    </div>
+                    <div className="invoice-meta-info">
+                        <div className="meta-row">
+                            <div className="col1"><p className="text">Tax Invoice</p></div><
+                            div className="col2"><p className="text">{this.invoice.invoiceNo}</p></div>
+                        </div>
+                        <div className="meta-row">
+                            <div className="col1"><p className="text">Invoice Date</p></div><
+                            div className="col2"><p className="text">{formattedDate(this.invoice.invoiceDate)}</p></div>
+                        </div>
+                        <div className="meta-row">
+                            <div className="col1"><p className="text">Invoice Due Date</p></div><
+                            div className="col2"><p className="text">{formattedDate(this.invoice.invoiceDueDate)}</p></div>
+                        </div>
+                        <div className="meta-row bg">
+                            <div className="col1"><p className="text"><b>Balance Due</b></p></div><
+                            div className="col2"><p className="text">{this.invoice.total} {this.invoice.currency}</p></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }
