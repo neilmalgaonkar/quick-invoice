@@ -14,12 +14,13 @@ class InvoiceRow extends React.Component
     render() {
         return (
             <div className="table-row">
-                <span className="td col-no">{this.props.currInvoice.invoiceNo}</span>
+                <span className="td col-no"><Link to={"/invoice/"
+                 + this.props.invoiceIndex} className="view-link">{this.props.currInvoice.invoiceNo}</Link></span>
                 <span className="td col-date">{formattedDate(this.props.currInvoice.invoiceDate)}</span>
-                <span className="td col-date">{formattedDate(this.props.currInvoice.invoiceDueDate)}</span>
+                <span className="td col-date col-due-date">{formattedDate(this.props.currInvoice.invoiceDueDate)}</span>
                 <span className="td col-status">{invoiceStatus(this.props.currInvoice.status)}</span>
                 <span className="td col-action"><Link to={"/invoice/"
-                 + this.props.invoiceIndex}>Edit</Link></span>
+                 + this.props.invoiceIndex} className="view-link">View</Link></span>
             </div>
         );
     }

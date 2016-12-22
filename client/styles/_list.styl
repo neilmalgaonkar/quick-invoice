@@ -14,6 +14,9 @@
         float right
         margin-top 1.3rem
 
+    .responsive-invoice-list-table
+        display none
+
     .invoice-list-table
         display inline-block
         width 100%
@@ -24,3 +27,24 @@
 
         .td
             color textcolor
+
+@media (max-width: 767px)
+    .list-container
+        .invoice-list-table
+            .col-status
+            .col-due-date
+                display none
+            .th
+            .td
+                width 33.3%
+
+@media (max-width: 600px)
+    .list-container
+        .invoice-list-table
+            .col-date
+            .col-action
+                display none
+
+
+            .col-no
+                width 100%

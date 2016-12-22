@@ -269,7 +269,7 @@ class Invoice extends React.Component
                 <form ref="invoiceForm" className="invoice-form" onChange={this.saveInvoice.bind(this)} onSubmit={this.onSubmitInvoice.bind(this)}>
                     <div className="header-cont">
                         <Link to="/" className="button goto-home" >&lt; Back</Link>
-                        <h1 className="header">Invoice</h1>
+                        {/*<h1 className="header">Invoice</h1>*/}
                         <div className="invoice-btn-cont">
                             <button className="button preview-invoice " onClick={this.previewInvoice.bind(this)}>Preview</button>
                             <button className={`button save-invoice ${(this.state.ui.invoiceModified) ? '' : 'disable'}`} type="submit">Save Invoice</button>

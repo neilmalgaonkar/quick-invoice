@@ -36,6 +36,7 @@ class Entries extends React.Component {
                         <span className="th col-rate">Rate</span>
                         <span className="th col-amount">Amount</span>
                     </div>
+                    <div className="responsive-table-header"><h1>Entries</h1></div>
                     <div className={`entries ${this.toggleClsBtn()} `}>
                         {this.renderEntries()}
                     </div>
@@ -45,7 +46,7 @@ class Entries extends React.Component {
                     <div className="amount-table">
                         <div className="table-row">
                             <div className="col1"><label>Subtotal</label></div>
-                            <div className="col2"><div className="currency-cont">{this.props.subtotal}<span className="currency">{this.props.invoice.currency}</span></div></div>
+                            <div className="col2 bg"><div className="currency-cont">{this.props.subtotal}<span className="currency">{this.props.invoice.currency}</span></div></div>
                         </div>
                         <div className="table-row">
                             <div className="col1"><label>Discount</label></div>
@@ -61,7 +62,7 @@ class Entries extends React.Component {
                         </div>
                         <div className="table-row">
                             <div className="col1"><label>Total Amount</label></div>
-                            <div className="col2"><div className="currency-cont">{this.props.total}<span className="currency">{this.props.invoice.currency}</span></div></div>
+                            <div className="col2 bg"><div className="currency-cont">{this.props.total}<span className="currency">{this.props.invoice.currency}</span></div></div>
                         </div>
                     </div>
                 </div>

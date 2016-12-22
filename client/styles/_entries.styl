@@ -25,6 +25,8 @@
 
     .entries
         margin-bottom 1.3rem
+        .alternate-row-view
+            display none
         &.hide-cls-btn
             .cls-btn
                 display none
@@ -32,6 +34,10 @@
         .currency-cont
             text-align right
             padding-right 2.6rem
+
+
+    .responsive-table-header
+        display none
 
     .add-item
         float right
@@ -68,3 +74,77 @@
         color textcolor
         line-height  2.6
         padding-right 1.2rem
+
+@media (max-width: 767px)
+    .invoice-entries
+        margin-top .5rem
+    .entries-table
+        margin-top 0
+        .cls-btn
+            top 2.9rem
+        .entries
+            margin-top .5rem
+            .row-view
+                display none
+            .alternate-row-view
+                display block
+                position relative
+
+        .table-header
+                display none
+        .responsive-table-header
+            display block
+
+            h1
+                font-size 2rem
+                color #000
+                margin 0 0 .8rem
+
+        .entry-item-cont
+            display inline-block
+            width 100%
+            box-sizing border-box
+
+        .item-field-row
+            width 100%
+            display inline-block
+            padding .8rem 0
+
+        .item-field-col
+            display inline-block
+            width 35%
+            box-sizing border-box
+            padding 0 .4rem
+            &:last-child
+                width 30%
+
+            .currency-cont
+                padding-right .5rem
+
+@media (max-width: 480px)
+    .entries-table
+        .item-field-col
+            display inline-block
+            width 100%
+            padding-bottom 1.6rem
+            &:last-child
+                .field-label
+                    text-align right
+                width 100%
+                padding-bottom 0
+            .currency-cont
+                background-color #e6e6e6
+                padding-right .8rem
+
+    .invoice-amount-info
+        max-width 100%
+        .col1
+        .col2
+            width 100%
+            text-align right
+            padding 0
+        .col2
+            &.bg
+                background-color #e6e6e6
+        .table-row
+            margin-bottom .1rem

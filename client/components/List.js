@@ -17,7 +17,7 @@ class List extends React.Component {
                     <div className="table-header">
                         <span className="th col-no">Invoice No</span>
                         <span className="th col-date">Issue Date</span>
-                        <span className="th col-date">Due Date</span>
+                        <span className="th col-date col-due-date">Due Date</span>
                         <span className="th col-status">Status</span>
                         <span className="th col-action">Action</span>
                     </div>
@@ -27,6 +27,7 @@ class List extends React.Component {
                     }
                 })}
                 </div>
+                <div className="responsive-invoice-list-table"></div>
             </div>
         )
     }

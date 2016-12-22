@@ -5,7 +5,8 @@
         display inline-block
         width 100%
         position relative
-        margin-bottom 2rem
+        margin-bottom .5rem
+        min-height 4.8rem
 
     .header
         font-size 3.2rem
@@ -98,3 +99,22 @@
 .invoice-entries
     margin 1.6rem 0;
     padding 0 0.8rem
+
+@media (max-width: 676px)
+    .invoice-form
+        .col1
+        .col2
+            width 100%
+
+@media (max-width: 480px)
+    .invoice-container
+        .goto-home
+            position relative
+            display inline-block
+
+        .invoice-btn-cont
+            text-align right
+            position relative
+            display inline-block
+            width 100%
+            margin-top .8rem
