@@ -1,5 +1,7 @@
 import React from 'react'
 
+import _ from 'lodash'
+
 import LabelInputField from './LabelInputField'
 
 class Entry extends React.Component {
@@ -9,19 +11,21 @@ class Entry extends React.Component {
 
     remove(e) {
         e.preventDefault()
-        // this.props.removeItem(this.props.index);
-        this.props.removeEntry(this.props.invoiceid, this.props.index)
+        this.props.removeEntry(this.props.index)
     }
 
     updateEntry() {
         let index = this.props.index
+        let rate = !isNaN(this.refs['rateRef_' + index].refs.labelField.value) ? this.refs['rateRef_' + index].refs.labelField.value : 0
+        let quantity = !isNaN(this.refs['quantityRef_' + index].refs.labelField.value) ? this.refs['quantityRef_' + index].refs.labelField.value : 0
+        let amount = rate * quantity
         let entry = {
             description: this.refs['description_' + index].value,
-            rate: this.refs['rateRef_' + index].refs.labelField.value,
-            quantity: this.refs['quantityRef_' + index].refs.labelField.value,
-            amount: 0
+            rate: rate,
+            quantity: quantity,
+            amount: amount
         }
-        this.props.updateEntry(this.props.invoiceid, entry, index);
+        this.props.updateEntry(entry, index);
     }
 
     render(){

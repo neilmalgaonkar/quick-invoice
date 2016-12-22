@@ -9,9 +9,9 @@ class InvoiceContainer extends React.Component {
     }
 
     render() {
-        let newInvoiceId = this.props.invoices.length;
         let invoice = this.props.invoices[this.props.params.invoiceid]
-        return (<div><Invoice invoice={invoice} invoiceid={this.props.params.invoiceid} {...this.props}/></div>)
+        let invoiceEntries = this.props.entries[this.props.params.invoiceid]
+        return (<div><Invoice invoice={invoice} invoiceEntries={invoiceEntries} invoiceid={this.props.params.invoiceid} {...this.props}/></div>)
     }
 }
 

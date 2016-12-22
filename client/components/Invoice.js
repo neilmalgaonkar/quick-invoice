@@ -8,97 +8,130 @@ import Moment from 'moment'
 
 import DatePicker from 'react-datepicker'
 import Entries from './Entries'
+import Entry from './Entry'
 import InvoicePreview from './InvoicePreview'
 import LabelInputField from './LabelInputField'
 
-class Invoice extends React.Component {
-
+class Invoice extends React.Component
+{
     constructor(props) {
         super(props)
+        this.hasFormModified = false
         this.state = {
-            invoiceDate: this.props.invoice.invoiceDate,
-            invoiceDueDate: this.props.invoice.invoiceDueDate
+            invoice: props.invoice,
+            invoiceEntries: props.invoiceEntries,
+            ui: {
+                invoiceModified: false
+            }
         }
-        this.invoiceDate = {}
+
+        this.dates = {
+            invoiceDate: props.invoice.invoiceDate,
+            incoice: props.invoice.invoiceDueDate
+        }
+
+        this.entries = (props.invoiceEntries === undefined) ? [] : props.invoiceEntries
+
         let defaultLogoData = {
             path: "",
             width: 0,
             height: 0
         }
         this.logo = Object.assign({},defaultLogoData, props.invoice.logo)
+        this.autoSaveInterval = 0
     }
 
-    updateInvoiceState() {
-        let entriesCont = this.refs.entriesCont.refs;
-        let logoSelected = (this.logo.path === "") ? false : true
-        this.invoiceData = {
-            invoiceNo: this.refs.invoiceNoRef.refs.labelField.value,
-            invoiceTerms: this.refs.invoiceTerms.value,
-            invoiceDate: this.state.invoiceDate,
-            invoiceDueDate: this.state.invoiceDueDate,
-            logoSelected: logoSelected,
-            logo: this.logo,
-            from : this.refs.from.value,
-            to: this.refs.to.value,
-            notes: this.refs.notes.value,
-            terms: this.refs.termsText.value,
-            currency: this.refs.currency.value,
-            tax: entriesCont.taxRef.refs.labelField.value,
-            discount: entriesCont.discountRef.refs.labelField.value,
-            entries: this.props.entries[this.props.invoiceid],
-            subtotal: this.subtotal(),
-            total: this.totalAmount()
+    componentWillMount() {
+        let self = this
+        this.autoSaveInterval = setInterval(function() {
+            if(self.hasFormModified)
+                self.autoStore()
+        }, 7000)
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.autoSaveInterval)
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if(!this.props.ui.notificationAutoVisible && nextProps.ui.notificationAutoVisible) {
+            this._hideAutosaveNotification()
         }
+        this.setState({
+            invoice: nextProps.invoice,
+            invoiceEntries: nextProps.invoiceEntries
+        })
     }
 
-    autoSave(e) {
-        _.throttle(this.saveInvoice.bind(this), 100)(e)
+    autoStore() {
+        this.storeInvoice()
     }
 
-    handleFieldUpdates() {
-        this.updateInvoiceState();
-        this.props.saveInvoice(this.invoiceData, this.props.invoiceid)
-    }
-
-    saveInvoice(e) {
+    onSubmitInvoice(e) {
         e.preventDefault()
-        console.log("calling auto save")
-        this.updateInvoiceState()
-        this.props.storeInvoice(this.invoiceData, this.props.invoiceid)
+        if(!this.hasFormModified)
+            return
+        this.storeInvoice()
     }
 
-    handleChange(label, date) {
+    storeInvoice() {
+        let {invoice, entries} = this._gatherFormData()
+        this.hasFormModified = false
+        this.setState({
+            ui: {
+                invoiceModified: false
+            }
+        })
+        this.props.storeInvoice(invoice, entries, this.props.invoiceid)
+        this.props.showAutosaveNotification()
+    }
+
+    saveInvoice() {
+        let {invoice, entries} = this._gatherFormData()
+        this.hasFormModified = true
+        this.setState({
+            ui: {
+                invoiceModified: true
+            }
+        })
+        this.props.saveInvoice(invoice, entries, this.props.invoiceid)
+    }
+
+    previewInvoice(e) {
+        e.preventDefault()
+        this.props.toggleOverlay()
+        ReactDOM.render(<InvoicePreview {...this.props}/>, document.getElementById('popup-container'))
+    }
+
+    addEntry(entry) {
+        this.entries.push(entry)
+        this.saveInvoice()
+    }
+
+    updateEntry(updatedEntry, entryIndex) {
+        if(this.entries[entryIndex] !== undefined) {
+            this.entries = this.entries.map((entry, index) => index == entryIndex ? updatedEntry : entry)
+            this.saveInvoice()
+        }
+    }
+
+    removeEntry(entryIndex) {
+        if(this.entries[entryIndex] !== undefined) {
+            this.entries = [
+                ...this.entries.splice(0, entryIndex),
+                ...this.entries.splice(entryIndex + 1)
+            ]
+            this.saveInvoice()
+        }
+    }
+
+    handleDateChange(label, date) {
         if(label === 'invoice_date') {
-            this.setState({
-                invoiceDate: date
-            })
+            this.dates.invoiceDate = date;
         } else {
-            this.setState({
-                invoiceDueDate: date
-            })
+            this.dates.invoiceDueDate = date
         }
-    }
-
-    subtotal() {
-        let invoiceEntries = this.props.entries[this.props.invoiceid]
-        if(invoiceEntries === undefined) {
-            return 0
-        }
-        let amount = invoiceEntries.reduce((totalAmount, entry) => {
-            if(isNaN(totalAmount) === undefined)
-                totalAmount = 0
-            return totalAmount + entry.amount
-        }, 0)
-        return amount
-    }
-
-    totalAmount() {
-        let amount = this.subtotal()
-        let discount = (amount * this.props.invoice.discount) / 100
-        let discountedAmount = amount - discount
-        let taxAmount = (discountedAmount * this.props.invoice.tax) / 100
-        let finalAmount = taxAmount + discountedAmount
-        return finalAmount
+        this.saveInvoice()
     }
 
     openFileBrowser(e) {
@@ -121,12 +154,38 @@ class Invoice extends React.Component {
                         width: dimensions.imgWidth,
                         height: dimensions.imgHeight
                     }
-                    this.handleFieldUpdates()
+                    this.saveInvoice()
                 }
                 image.src = data
             }
             fr.readAsDataURL(file)
         }
+    }
+
+    _hideAutosaveNotification() {
+        let self = this
+        setTimeout(function() {
+            self.props.hideAutosaveNotification()
+        }, 2000)
+    }
+
+    _hasFormModified() {
+        let { invoice, entries } = this._gatherFormData()
+        let currentInvoice = {
+            ...invoice,
+            'entries': entries
+        }
+        let propsInvoice = {
+            ...this.props.invoice,
+            'entries': this.props.invoiceEntries
+        }
+        console.log(currentInvoice, propsInvoice)
+        let serializedInvoice = JSON.stringify(currentInvoice);
+        let propsSerializedInvoice = JSON.stringify(propsInvoice)
+        if(serializedInvoice === propsSerializedInvoice) {
+            return false
+        }
+        return true
     }
 
     _resize(image) {
@@ -154,22 +213,66 @@ class Invoice extends React.Component {
         }
     }
 
-    previewInvoice(e) {
-        e.preventDefault()
-        this.props.toggleOverlay()
-        ReactDOM.render(<InvoicePreview {...this.props}/>, document.getElementById('popup-container'))
+    _gatherFormData() {
+        let entriesCont = this.refs.entriesCont.refs
+        let discount = entriesCont.discountRef.refs.labelField.value
+        let tax = entriesCont.taxRef.refs.labelField.value
+        let totalAmount = this._total(this.entries, tax, discount)
+
+        let invoice = {
+            invoiceNo: this.refs.invoiceNoRef.refs.labelField.value,
+            invoiceTerms: this.refs.invoiceTerms.value,
+            currency: this.refs.currency.value,
+            tax: entriesCont.taxRef.refs.labelField.value,
+            discount: entriesCont.discountRef.refs.labelField.value,
+            subtotal: this._subTotal(this.entries),
+            total: totalAmount,
+            invoiceDate: this.dates.invoiceDate,
+            invoiceDueDate: this.dates.invoiceDueDate,
+            from : this.refs.from.value,
+            to: this.refs.to.value,
+            notes: this.refs.notes.value,
+            terms: this.refs.termsText.value,
+            logo: this.logo
+        }
+
+        let entries = this.entries;
+
+        return {
+            invoice,
+            entries
+        }
+    }
+
+    _subTotal(entries) {
+        if(entries.length == 0) {
+            return 0
+        }
+        let amount = entries.reduce((totalAmount, entry) => {
+            return totalAmount + entry.amount
+        }, 0)
+        return amount
+    }
+
+    _total(entries, tax, discount) {
+        let amount = this._subTotal(entries)
+        let calcDiscount = (amount * discount) / 100
+        let discountedAmount = amount - calcDiscount
+        let taxAmount = (discountedAmount * tax) / 100
+        let finalAmount = taxAmount + discountedAmount
+        return finalAmount
     }
 
     render() {
         return (
             <div className="invoice-container">
-                <form ref="invoiceForm" className="invoice-form" onChange={this.autoSave.bind(this)} onSubmit={this.saveInvoice.bind(this)}>
+                <form ref="invoiceForm" className="invoice-form" onChange={this.saveInvoice.bind(this)} onSubmit={this.onSubmitInvoice.bind(this)}>
                     <div className="header-cont">
                         <Link to="/" className="button goto-home" >&lt; Back</Link>
                         <h1 className="header">Invoice</h1>
                         <div className="invoice-btn-cont">
-                            <button className="button preview-invoice" onClick={this.previewInvoice.bind(this)}>Preview</button>
-                            <button className="button save-invoice" type="submit">Save Invoice</button>
+                            <button className="button preview-invoice " onClick={this.previewInvoice.bind(this)}>Preview</button>
+                            <button className={`button save-invoice ${(this.state.ui.invoiceModified) ? '' : 'disable'}`} type="submit">Save Invoice</button>
                         </div>
                     </div>
                     <div className="invoice-info-header">
@@ -185,18 +288,17 @@ class Invoice extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                        </div>*/}
+                        </div> */}
                         <div className="row">
                             <div className="col1">
                                 <div className="field-grp">
                                     <label htmlFor="invoiceNo" className="field-label">Invoice No</label>
-                                    <LabelInputField ref="invoiceNoRef" position="left" fieldType="text" labelText="#" contClass="invoice-no-field-cont" value={this.props.invoice.invoiceNo}/>
-                                    {/*<input id="inviceNo" type="text" className="input" ref="invoiceNo" placeholder="Invoice Number" defaultValue={this.props.invoice.invoiceNo}/>*/}
+                                    <LabelInputField ref="invoiceNoRef" position="left" fieldType="text" labelText="#" contClass="invoice-no-field-cont" value={this.state.invoice.invoiceNo}/>
                                 </div>
                             </div><div className="col2">
                                 <div className="field-grp">
                                     <label htmlFor="invoiceTerms" className="field-label">Invoice Terms</label>
-                                    <input type="text" className="input" ref="invoiceTerms" id="invoiceTerms" placeholder="Invoice Terms" defaultValue={this.props.invoice.invoiceTerms}/>
+                                    <input type="text" className="input" ref="invoiceTerms" id="invoiceTerms" placeholder="Invoice Terms" defaultValue={this.state.invoice.invoiceTerms}/>
                                 </div>
                             </div>
                         </div>
@@ -204,12 +306,12 @@ class Invoice extends React.Component {
                             <div className="col1">
                                 <div className="field-grp">
                                     <label className="field-label">Invoice Date</label>
-                                    <DatePicker ref="invoiceDate" selected={Moment(this.state.invoiceDate)} placeholderText="Invoice Date" onChange={this.handleChange.bind(this, 'invoice_date')}/>
+                                    <DatePicker ref="invoiceDate" selected={Moment(this.state.invoice.invoiceDate)} placeholderText="Invoice Date" onChange={this.handleDateChange.bind(this, 'invoice_date')}/>
                                 </div>
                             </div><div className="col2">
                                 <div className="field-grp">
                                     <label className="field-label">Invoice Terms</label>
-                                    <DatePicker ref="invoiceDueDate" selected={Moment(this.state.invoiceDueDate)} placeholderText="Invoice Due Date" onChange={this.handleChange.bind(this, 'invoice_due_date')}/>
+                                    <DatePicker ref="invoiceDueDate" selected={Moment(this.state.invoice.invoiceDueDate)} placeholderText="Invoice Due Date" onChange={this.handleDateChange.bind(this, 'invoice_due_date')}/>
                                 </div>
                             </div>
                         </div>
@@ -217,12 +319,12 @@ class Invoice extends React.Component {
                             <div className="col1">
                                 <div className="field-grp">
                                     <label htmlFor="from" className="field-label">From</label>
-                                    <textarea ref="from" placeholder="Invoice from? (required)" id="from" defaultValue={this.props.invoice.from}></textarea>
+                                    <textarea ref="from" placeholder="Invoice from? (required)" id="from" defaultValue={this.state.invoice.from}></textarea>
                                 </div>
                             </div><div className="col2">
                                 <div className="field-grp">
                                     <label htmlFor="to" className="field-label">To</label>
-                                    <textarea ref="to" id="to" placeholder="Invoice to? (required)" defaultValue={this.props.invoice.to}></textarea>
+                                    <textarea ref="to" id="to" placeholder="Invoice to? (required)" defaultValue={this.state.invoice.to}></textarea>
                                 </div>
                             </div>
                         </div>
@@ -230,28 +332,28 @@ class Invoice extends React.Component {
                             <div className="col1">
                                 <div className="field-grp">
                                     <label htmlFor="currency" className="field-label">Currency</label>
-                                    <input type="text" className="input" ref="currency" id="currency" placeholder="Invoice Currency" defaultValue={this.props.invoice.currency}/>
+                                    <input type="text" className="input" ref="currency" id="currency" placeholder="Invoice Currency" defaultValue={this.state.invoice.currency}/>
                                 </div>
                             </div>
                             <div className="col2"></div>
                         </div>
                     </div>
                     <div className="invoice-entries">
-                        <Entries ref="entriesCont" {...this.props} subtotal={this.subtotal()} total={this.totalAmount()} handleFieldUpdates={this.handleFieldUpdates.bind(this)}/>
+                        <Entries ref="entriesCont" {...this.props} subtotal={this.state.invoice.subtotal} total={this.state.invoice.total} invoice={this.state.invoice} invoiceEntries={this.state.invoiceEntries} addEntry={this.addEntry.bind(this)} updateEntry={this.updateEntry.bind(this)} removeEntry={this.removeEntry.bind(this)}/>
                     </div>
                     <div className="invoice-info-footer">
                         <div className="field-grp">
                             <label htmlFor="notes" className="field-label"> Notes</label>
-                            <textarea ref="notes" id="notes" placeholder="Notes for invoice" defaultValue={this.props.invoice.notes}></textarea>
+                            <textarea ref="notes" id="notes" placeholder="Notes for invoice" defaultValue={this.state.invoice.notes}></textarea>
                         </div>
                         <div className="field-grp">
                             <label htmlFor="termsText" className="field-label">Terms</label>
-                            <textarea ref="termsText" id="termsText" placeholder="Terms for invoice" defaultValue={this.props.invoice.terms}></textarea>
+                            <textarea ref="termsText" id="termsText" placeholder="Terms for invoice" defaultValue={this.state.invoice.terms}></textarea>
                         </div>
                     </div>
                 </form>
             </div>
-        );
+        )
     }
 }
 
@@ -273,13 +375,19 @@ Invoice.defaultProps = {
         notes: "",
         terms: "",
         to: "",
-        entries: [],
+        entries: [{
+            description: "",
+            quantity: 0,
+            rate: 0,
+            amount: 0
+        }],
         subtotal: 0,
         tax: 0,
         discount: 0,
         total: 0,
         status: "draft"
-    }
+    },
+    invoiceEntries: [Entry.defaultProps]
 }
 
-export default Invoice;
+export default Invoice

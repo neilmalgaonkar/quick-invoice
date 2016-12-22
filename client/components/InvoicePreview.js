@@ -4,8 +4,8 @@ import { formattedDate } from './../utils'
 class InvoicePreivew extends React.Component {
     constructor(props) {
         super(props);
-        this.invoice = this.props.invoices[this.props.params.invoiceid]
-        this.entries = this.props.entries[this.props.params.invoiceid]
+        this.invoice = this.props.invoice
+        this.entries = this.props.invoiceEntries
     }
 
     renderEntries() {

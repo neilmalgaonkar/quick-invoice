@@ -8,23 +8,14 @@ class Entries extends React.Component {
         super(props)
     }
 
-    componentWillMount() {
-        if(this.props.entries[this.props.invoiceid] === undefined) {
-            this.addItem();
-        }
-    }
-
     toggleClsBtn() {
-        if(this.props.entries[this.props.invoiceid] === undefined) {
-            return ''
-        }
-        return (this.props.entries[this.props.invoiceid].length == 1? 'hide-cls-btn' : '')
+        return (this.props.invoiceEntries.length == 1? 'hide-cls-btn' : '')
     }
 
     addItem(e) {
         if(e !== undefined)
             e.preventDefault()
-        this.props.addEntry(Entry.defaultProps, this.props.invoiceid);
+        this.props.addEntry(Entry.defaultProps);
     }
 
     removeItem(e) {
@@ -32,10 +23,7 @@ class Entries extends React.Component {
     }
 
     renderEntries() {
-        if(this.props.entries[this.props.invoiceid] === undefined) {
-            return;
-        }
-        return this.props.entries[this.props.invoiceid].map((entry, index) => <Entry key={index} index={index} entry={entry} {...this.props}/>)
+        return this.props.invoiceEntries.map((entry, index) => <Entry key={index} index={index} entry={entry} {...this.props}/>)
     }
 
     render() {
@@ -62,14 +50,12 @@ class Entries extends React.Component {
                         <div className="table-row">
                             <div className="col1"><label>Discount</label></div>
                             <div className="col2">
-                                {/*<input type="text" ref="discount" className="rtl" defaultValue={this.props.invoice.discount} onChange={this.props.handleFieldUpdates} />*/}
                                 <LabelInputField ref="discountRef" position="right" fieldType="text" labelText="%" contClass="discount-field-cont" value={this.props.invoice.discount}/>
                             </div>
                         </div>
                         <div className="table-row">
                             <div className="col1"><label>Tax</label></div>
                             <div className="col2">
-                                {/*<input type="text" ref="tax" className="rtl" defaultValue={this.props.invoice.tax} onChange={this.props.handleFieldUpdates}/>*/}
                                 <LabelInputField ref="taxRef" position="right" fieldType="text" labelText="%" value={this.props.invoice.tax} contClass="tax-field-cont"/>
                             </div>
                         </div>

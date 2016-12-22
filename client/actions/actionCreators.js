@@ -1,18 +1,14 @@
 import Promise from 'bluebird'
 
-export function storeInvoice(invoice, invoiceIndex) {
+export function storeInvoice(invoice, entries, invoiceid) {
     return dispatch => {
         return new Promise((resolve, reject) => {
             try {
-                let entries = invoice.entries;
-                delete invoice.entries;
-                storeArrayLocally("invoices", invoice, invoiceIndex)
-                storeObjectLocally("entries", entries, invoiceIndex)
-                invoice['entries'] = entries
-                dispatch(saveInvoice(invoice, invoiceIndex))
+                storeArrayLocally("invoices", invoice, invoiceid)
+                storeObjectLocally("entries", entries, invoiceid)
+                dispatch(saveInvoice(invoice, entries, invoiceid))
                 resolve(invoice)
             } catch(err) {
-                console.log(err)
                 resolve(invoice)
             }
         })
@@ -46,41 +42,54 @@ function storeObjectLocally(key, data, dataIndex) {
     }
 }
 
-export function saveInvoice(invoice, invoiceIndex) {
+export function saveInvoice(invoice, entries, invoiceid) {
     return {
         type: 'SAVE_INVOICE',
         invoice,
-        invoiceIndex
-    }
-}
-
-export function addEntry(entry, invoiceid) {
-    return {
-        type: 'ADD_ENTRY',
-        entry,
+        entries,
         invoiceid
-    };
-}
-
-export function updateEntry(invoiceid, entry, index) {
-    return {
-        type: 'UPDATE_ENTRY',
-        invoiceid,
-        entry,
-        index
     }
 }
 
-export function removeEntry(invoiceid, index) {
-    return {
-        type: 'REMOVE_ENTRY',
-        invoiceid,
-        index
-    }
-}
+// export function addEntry(entry, invoiceid) {
+//     return {
+//         type: 'ADD_ENTRY',
+//         entry,
+//         invoiceid
+//     };
+// }
+
+// export function updateEntry(invoiceid, entry, index) {
+//     return {
+//         type: 'UPDATE_ENTRY',
+//         invoiceid,
+//         entry,
+//         index
+//     }
+// }
+
+// export function removeEntry(invoiceid, index) {
+//     return {
+//         type: 'REMOVE_ENTRY',
+//         invoiceid,
+//         index
+//     }
+// }
 
 export function toggleOverlay() {
     return {
         type: 'TOGGLE_OVERLAY'
+    }
+}
+
+export function showAutosaveNotification() {
+    return {
+        type: 'SHOW_AUTO_SAVE_NOTIFICATION'
+    }
+}
+
+export function hideAutosaveNotification() {
+    return {
+        type: 'HIDE_AUTO_SAVE_NOTIFICATION'
     }
 }

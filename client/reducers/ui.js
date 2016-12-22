@@ -1,6 +1,9 @@
+import _ from 'lodash'
+
 export function ui(state = {}, action) {
     let defaultState = {
-        overlay: false
+        overlay: false,
+        notificationAutoVisible: false
     }
     switch(action.type) {
         case 'TOGGLE_OVERLAY':
@@ -8,7 +11,21 @@ export function ui(state = {}, action) {
                 ...state,
                 overlay: !state.overlay
             }
+        case 'SHOW_AUTO_SAVE_NOTIFICATION':
+            return {
+                ...state,
+                notificationAutoVisible: true
+            }
+        case 'HIDE_AUTO_SAVE_NOTIFICATION':
+            return {
+                ...state,
+                notificationAutoVisible: false
+            }
         default:
-            return defaultState
+            if(_.isEmpty(state)){
+                return defaultState
+            } else {
+                return state
+            }
     }
 }
