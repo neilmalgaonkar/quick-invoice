@@ -265,93 +265,101 @@ class Invoice extends React.Component
 
     render() {
         return (
-            <div className="invoice-container">
-                <form ref="invoiceForm" className="invoice-form" onChange={this.saveInvoice.bind(this)} onSubmit={this.onSubmitInvoice.bind(this)}>
-                    <div className="header-cont">
-                        <Link to="/" className="button goto-home" >&lt; Back</Link>
-                        {/*<h1 className="header">Invoice</h1>*/}
-                        <div className="invoice-btn-cont">
-                            <button className="button preview-invoice " onClick={this.previewInvoice.bind(this)}>Preview</button>
-                            <button className={`button save-invoice ${(this.state.ui.invoiceModified) ? '' : 'disable'}`} type="submit">Save Invoice</button>
-                        </div>
+            <div>
+                <div className="invoice-tool-bar">
+                    <div className="invoice-tool-bar-cont">
+                        <button className="button preview-invoice " onClick={this.previewInvoice.bind(this)}>Preview</button>
+                        <button className={`button save-invoice ${(this.state.ui.invoiceModified) ? '' : 'disable'}`} type="submit">Save Invoice</button>
                     </div>
-                    <div className="invoice-info-header">
-                        {/*<div className="row">
-                            <div className="col1">
-                                <div className="logo-placeholder" onClick={this.openFileBrowser.bind(this)}>
-                                    <input type="file" ref="logo_upload_btn" className="logo-upload-btn" onChange={this.imageChosen.bind(this)}/>
-                                    <span className="upload-btn-text">+ Add Logo</span>
-                                    <div className="img-cont">
-                                        <span className="cls-btn">x</span>
+                </div>
+                <div className="invoice-container">
+                    <form ref="invoiceForm" className="invoice-form" onChange={this.saveInvoice.bind(this)} onSubmit={this.onSubmitInvoice.bind(this)}>
+                        <div className="header-cont">
+                            <Link to="/" className="button goto-home" >&lt; Back</Link>
+                            {/*<h1 className="header">Invoice</h1>
+                            <div className="invoice-btn-cont">
+                                <button className="button preview-invoice " onClick={this.previewInvoice.bind(this)}>Preview</button>
+                                <button className={`button save-invoice ${(this.state.ui.invoiceModified) ? '' : 'disable'}`} type="submit">Save Invoice</button>
+                            </div> */}
+                        </div>
+                        <div className="invoice-info-header">
+                            {/*<div className="row">
+                                <div className="col1">
+                                    <div className="logo-placeholder" onClick={this.openFileBrowser.bind(this)}>
+                                        <input type="file" ref="logo_upload_btn" className="logo-upload-btn" onChange={this.imageChosen.bind(this)}/>
+                                        <span className="upload-btn-text">+ Add Logo</span>
+                                        <div className="img-cont">
+                                            <span className="cls-btn">x</span>
 
-                                        <img src={this.props.invoice.logo.path} className="logo" width={this.props.invoice.logo.width} height={this.props.invoice.logo.height} ref="logo"/>
+                                            <img src={this.props.invoice.logo.path} className="logo" width={this.props.invoice.logo.width} height={this.props.invoice.logo.height} ref="logo"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> */}
+                            <div className="row">
+                                <div className="col1">
+                                    <div className="field-grp">
+                                        <label htmlFor="invoiceNo" className="field-label">Invoice No</label>
+                                        <LabelInputField ref="invoiceNoRef" position="left" fieldType="text" labelText="#" contClass="invoice-no-field-cont" value={this.state.invoice.invoiceNo}/>
+                                    </div>
+                                </div><div className="col2">
+                                    <div className="field-grp">
+                                        <label htmlFor="invoiceTerms" className="field-label">Invoice Terms</label>
+                                        <input type="text" className="input" ref="invoiceTerms" id="invoiceTerms" placeholder="Invoice Terms" defaultValue={this.state.invoice.invoiceTerms}/>
                                     </div>
                                 </div>
                             </div>
-                        </div> */}
-                        <div className="row">
-                            <div className="col1">
-                                <div className="field-grp">
-                                    <label htmlFor="invoiceNo" className="field-label">Invoice No</label>
-                                    <LabelInputField ref="invoiceNoRef" position="left" fieldType="text" labelText="#" contClass="invoice-no-field-cont" value={this.state.invoice.invoiceNo}/>
-                                </div>
-                            </div><div className="col2">
-                                <div className="field-grp">
-                                    <label htmlFor="invoiceTerms" className="field-label">Invoice Terms</label>
-                                    <input type="text" className="input" ref="invoiceTerms" id="invoiceTerms" placeholder="Invoice Terms" defaultValue={this.state.invoice.invoiceTerms}/>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col1">
-                                <div className="field-grp">
-                                    <label className="field-label">Invoice Date</label>
-                                    <DatePicker ref="invoiceDate" selected={Moment(this.state.invoice.invoiceDate)} placeholderText="Invoice Date" onChange={this.handleDateChange.bind(this, 'invoice_date')}/>
-                                </div>
-                            </div><div className="col2">
-                                <div className="field-grp">
-                                    <label className="field-label">Invoice Terms</label>
-                                    <DatePicker ref="invoiceDueDate" selected={Moment(this.state.invoice.invoiceDueDate)} placeholderText="Invoice Due Date" onChange={this.handleDateChange.bind(this, 'invoice_due_date')}/>
+                            <div className="row">
+                                <div className="col1">
+                                    <div className="field-grp">
+                                        <label className="field-label">Invoice Date</label>
+                                        <DatePicker ref="invoiceDate" selected={Moment(this.state.invoice.invoiceDate)} placeholderText="Invoice Date" onChange={this.handleDateChange.bind(this, 'invoice_date')}/>
+                                    </div>
+                                </div><div className="col2">
+                                    <div className="field-grp">
+                                        <label className="field-label">Invoice Terms</label>
+                                        <DatePicker ref="invoiceDueDate" selected={Moment(this.state.invoice.invoiceDueDate)} placeholderText="Invoice Due Date" onChange={this.handleDateChange.bind(this, 'invoice_due_date')}/>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="row">
-                            <div className="col1">
-                                <div className="field-grp">
-                                    <label htmlFor="from" className="field-label">From</label>
-                                    <textarea ref="from" placeholder="Invoice from? (required)" id="from" defaultValue={this.state.invoice.from}></textarea>
-                                </div>
-                            </div><div className="col2">
-                                <div className="field-grp">
-                                    <label htmlFor="to" className="field-label">To</label>
-                                    <textarea ref="to" id="to" placeholder="Invoice to? (required)" defaultValue={this.state.invoice.to}></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col1">
-                                <div className="field-grp">
-                                    <label htmlFor="currency" className="field-label">Currency</label>
-                                    <input type="text" className="input" ref="currency" id="currency" placeholder="Invoice Currency" defaultValue={this.state.invoice.currency}/>
+                            <div className="row">
+                                <div className="col1">
+                                    <div className="field-grp">
+                                        <label htmlFor="from" className="field-label">From</label>
+                                        <textarea ref="from" placeholder="Invoice from? (required)" id="from" defaultValue={this.state.invoice.from}></textarea>
+                                    </div>
+                                </div><div className="col2">
+                                    <div className="field-grp">
+                                        <label htmlFor="to" className="field-label">To</label>
+                                        <textarea ref="to" id="to" placeholder="Invoice to? (required)" defaultValue={this.state.invoice.to}></textarea>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="col2"></div>
+                            <div className="row">
+                                <div className="col1">
+                                    <div className="field-grp">
+                                        <label htmlFor="currency" className="field-label">Currency</label>
+                                        <input type="text" className="input" ref="currency" id="currency" placeholder="Invoice Currency" defaultValue={this.state.invoice.currency}/>
+                                    </div>
+                                </div>
+                                <div className="col2"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div className="invoice-entries">
-                        <Entries ref="entriesCont" {...this.props} subtotal={this.state.invoice.subtotal} total={this.state.invoice.total} invoice={this.state.invoice} invoiceEntries={this.state.invoiceEntries} addEntry={this.addEntry.bind(this)} updateEntry={this.updateEntry.bind(this)} removeEntry={this.removeEntry.bind(this)}/>
-                    </div>
-                    <div className="invoice-info-footer">
-                        <div className="field-grp">
-                            <label htmlFor="notes" className="field-label"> Notes</label>
-                            <textarea ref="notes" id="notes" placeholder="Notes for invoice" defaultValue={this.state.invoice.notes}></textarea>
+                        <div className="invoice-entries">
+                            <Entries ref="entriesCont" {...this.props} subtotal={this.state.invoice.subtotal} total={this.state.invoice.total} invoice={this.state.invoice} invoiceEntries={this.state.invoiceEntries} addEntry={this.addEntry.bind(this)} updateEntry={this.updateEntry.bind(this)} removeEntry={this.removeEntry.bind(this)}/>
                         </div>
-                        <div className="field-grp">
-                            <label htmlFor="termsText" className="field-label">Terms</label>
-                            <textarea ref="termsText" id="termsText" placeholder="Terms for invoice" defaultValue={this.state.invoice.terms}></textarea>
+                        <div className="invoice-info-footer">
+                            <div className="field-grp">
+                                <label htmlFor="notes" className="field-label"> Notes</label>
+                                <textarea ref="notes" id="notes" placeholder="Notes for invoice" defaultValue={this.state.invoice.notes}></textarea>
+                            </div>
+                            <div className="field-grp">
+                                <label htmlFor="termsText" className="field-label">Terms</label>
+                                <textarea ref="termsText" id="termsText" placeholder="Terms for invoice" defaultValue={this.state.invoice.terms}></textarea>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         )
     }
