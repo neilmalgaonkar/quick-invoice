@@ -162,6 +162,10 @@ class Invoice extends React.Component
         }
     }
 
+    downloadPdf() {
+        this.refs.hiddenForm.submit();
+    }
+
     _hideAutosaveNotification() {
         let self = this
         setTimeout(function() {
@@ -179,7 +183,6 @@ class Invoice extends React.Component
             ...this.props.invoice,
             'entries': this.props.invoiceEntries
         }
-        console.log(currentInvoice, propsInvoice)
         let serializedInvoice = JSON.stringify(currentInvoice);
         let propsSerializedInvoice = JSON.stringify(propsInvoice)
         if(serializedInvoice === propsSerializedInvoice) {
@@ -266,10 +269,18 @@ class Invoice extends React.Component
     render() {
         return (
             <div>
+                <form ref="hiddenForm" method="POST" action="http://138.197.92.211/pdf" target="_blank">
+                    <input type="hidden" name="invoice" value={JSON.stringify(this.state.invoice)}/>
+                    <input type="hidden" name="entries" value={JSON.stringify(this.state.invoiceEntries)}/>
+                </form>
                 <div className="invoice-tool-bar">
                     <div className="invoice-tool-bar-cont">
                         <button className="button preview-invoice " onClick={this.previewInvoice.bind(this)}>Preview</button>
                         <button className={`button save-invoice ${(this.state.ui.invoiceModified) ? '' : 'disable'}`} type="submit">Save Invoice</button>
+                        <button className={`button download-invoice ${(this.state.ui.invoiceModified) ? 'disable' : ''}`} onClick={(e) => {
+                            if(!this.state.ui.invoiceModified)
+                                this.downloadPdf.bind(this)()
+                        }}>Download</button>
                     </div>
                 </div>
                 <div className="invoice-container">
