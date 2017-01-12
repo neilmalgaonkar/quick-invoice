@@ -2,3 +2,7 @@ node_modules
 *.sublime-workspace
 *.sublime-project
 dist
+
+.env
+.env.prod
+config.js

@@ -1,0 +1,5 @@
+module.exports = {
+    HOST: "localhost",
+    PORT: 7770,
+    GENERATE_PDF_URL: 'http://localhost:8000/pdf'
+}

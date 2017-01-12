@@ -1,6 +1,18 @@
 var path = require('path');
 var webpack = require('webpack');
 
+var fs = require('fs');
+var dotenv = require('dotenv')
+
+var stats = fs.statSync('.env.prod');
+if(stats.isFile()) {
+    dotenv.config({
+        path: '.env.prod'
+    })
+} else {
+    throw new Error(".env is missing")
+}
+
 module.exports = {
   devtool: 'source-map',
   entry: [
@@ -16,7 +28,8 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': "'production'"
-      }
+      },
+      _GENERATE_PDF_: JSON.stringify(process.env.GENERATE_PDF)
     }),
     new webpack.optimize.UglifyJsPlugin({
       compressor: {
