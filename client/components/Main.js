@@ -2,8 +2,9 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import { Link } from 'react-router'
-import Popup from './Popup'
+
 import NotificationContainer from './../containers/NotificationContainer'
+import PopupContainer from './../containers/PopupContainer'
 
 class Main extends React.Component {
 
@@ -15,9 +16,7 @@ class Main extends React.Component {
         return (
             <div className={((this.props.ui.overlay) ? 'overlay-open' : 'overlay-close')}>
                 <NotificationContainer />
-                <div className="overlay">
-                </div>
-                <Popup {...this.props}/>
+                <PopupContainer />
                 <div>
                     <h1 className="site-title"><Link to="/">Quick Invoice!</Link></h1>
                     <div className="container">
