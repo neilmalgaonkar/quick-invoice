@@ -18,7 +18,6 @@ class List extends React.Component {
                         <span className="th col-no">Invoice No</span>
                         <span className="th col-date">Issue Date</span>
                         <span className="th col-date col-due-date">Due Date</span>
-                        <span className="th col-status">Status</span>
                         <span className="th col-action">Action</span>
                     </div>
                 {this.props.invoices.map((invoice, index) => {

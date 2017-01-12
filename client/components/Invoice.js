@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import _ from 'lodash'
+import validator from 'validator'
 
 import { Link } from 'react-router'
 import Moment from 'moment'
@@ -232,10 +233,10 @@ class Invoice extends React.Component
             total: totalAmount,
             invoiceDate: this.dates.invoiceDate,
             invoiceDueDate: this.dates.invoiceDueDate,
-            from : this.refs.from.value,
-            to: this.refs.to.value,
-            notes: this.refs.notes.value,
-            terms: this.refs.termsText.value,
+            from : validator.escape(this.refs.from.value),
+            to: validator.escape(this.refs.to.value),
+            notes: validator.escape(this.refs.notes.value),
+            terms: validator.escape(this.refs.termsText.value),
             logo: this.logo
         }
 
@@ -269,7 +270,7 @@ class Invoice extends React.Component
     render() {
         return (
             <div>
-                <form ref="hiddenForm" method="POST" action="http://138.197.92.211/pdf" target="_blank">
+                <form ref="hiddenForm" method="POST" action={_GENERATE_PDF_} target="_blank">
                     <input type="hidden" name="invoice" value={JSON.stringify(this.state.invoice)}/>
                     <input type="hidden" name="entries" value={JSON.stringify(this.state.invoiceEntries)}/>
                 </form>
@@ -337,12 +338,12 @@ class Invoice extends React.Component
                                 <div className="col1">
                                     <div className="field-grp">
                                         <label htmlFor="from" className="field-label">From</label>
-                                        <textarea ref="from" placeholder="Invoice from? (required)" id="from" defaultValue={this.state.invoice.from}></textarea>
+                                        <textarea ref="from" placeholder="Invoice from? (required)" id="from" defaultValue={validator.unescape(this.state.invoice.from)}></textarea>
                                     </div>
                                 </div><div className="col2">
                                     <div className="field-grp">
                                         <label htmlFor="to" className="field-label">To</label>
-                                        <textarea ref="to" id="to" placeholder="Invoice to? (required)" defaultValue={this.state.invoice.to}></textarea>
+                                        <textarea ref="to" id="to" placeholder="Invoice to? (required)" defaultValue={validator.unescape(this.state.invoice.to)}></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -362,11 +363,11 @@ class Invoice extends React.Component
                         <div className="invoice-info-footer">
                             <div className="field-grp">
                                 <label htmlFor="notes" className="field-label"> Notes</label>
-                                <textarea ref="notes" id="notes" placeholder="Notes for invoice" defaultValue={this.state.invoice.notes}></textarea>
+                                <textarea ref="notes" id="notes" placeholder="Notes for invoice" defaultValue={validator.unescape(this.state.invoice.notes)}></textarea>
                             </div>
                             <div className="field-grp">
                                 <label htmlFor="termsText" className="field-label">Terms</label>
-                                <textarea ref="termsText" id="termsText" placeholder="Terms for invoice" defaultValue={this.state.invoice.terms}></textarea>
+                                <textarea ref="termsText" id="termsText" placeholder="Terms for invoice" defaultValue={validator.unescape(this.state.invoice.terms)}></textarea>
                             </div>
                         </div>
                     </form>

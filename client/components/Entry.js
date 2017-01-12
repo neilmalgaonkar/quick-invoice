@@ -1,6 +1,7 @@
 import React from 'react'
 
 import _ from 'lodash'
+import validator from 'validator'
 
 import LabelInputField from './LabelInputField'
 
@@ -20,7 +21,7 @@ class Entry extends React.Component {
         let quantity = !isNaN(this.refs['quantityRef_' + index].refs.labelField.value) ? this.refs['quantityRef_' + index].refs.labelField.value : 0
         let amount = rate * quantity
         let entry = {
-            description: this.refs['description_' + index].value,
+            description: validator.escape(this.refs['description_' + index].value),
             rate: rate,
             quantity: quantity,
             amount: amount
@@ -35,7 +36,7 @@ class Entry extends React.Component {
                     <a href="" className="cls-btn" onClick={this.remove.bind(this)}>x</a>
                     <div className="td col-item">
                         <label htmlFor={"description_" + this.props.index}className="field-label">Description</label>
-                        <input type="text" ref={"description_" + this.props.index} placeholder="Item description" defaultValue={this.props.entry.description} onChange={this.updateEntry.bind(this)}/>
+                        <input type="text" ref={"description_" + this.props.index} placeholder="Item description" defaultValue={validator.unescape(this.props.entry.description)} onChange={this.updateEntry.bind(this)}/>
                     </div>
                     <div className="td col-quantity">
                         <label htmlFor={"quantity_" + this.props.index}className="field-label">Quantity</label>

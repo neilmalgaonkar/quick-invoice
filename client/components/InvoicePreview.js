@@ -1,6 +1,8 @@
 import React from 'react'
 import { formattedDate } from './../utils'
 
+import validator from 'validator'
+
 class InvoicePreivew extends React.Component {
     constructor(props) {
         super(props);
@@ -12,7 +14,7 @@ class InvoicePreivew extends React.Component {
         return this.entries.map((entry, i) => {
             return (
                 <div className="table-row" key={i}>
-                    <div className="col-item td"><span className="td-span">{entry.description}</span></div>
+                    <div className="col-item td"><span className="td-span">{validator.unescape(entry.description)}</span></div>
                     <div className="col-quantity td"><span className="td-span">{entry.quantity} hrs</span></div>
                     <div className="col-rate td"><div className="currency-cont">{entry.rate}<span className="currency">{this.invoice.currency}</span></div></div>
                     <div className="col-amount td"><div className="currency-cont">{entry.amount}<span className="currency">{this.invoice.currency}</span></div></div>
@@ -32,11 +34,11 @@ class InvoicePreivew extends React.Component {
                     </div>*/}
                     <div className="address from">
                         <span className="label">From :</span>
-                        <p className="text">{this.invoice.from}</p>
+                        <p className="text">{validator.unescape(this.invoice.from)}</p>
                     </div>
                     <div className="address to">
                         <span className="label">To :</span>
-                        <p className="text">{this.invoice.to}</p>
+                        <p className="text">{validator.unescape(this.invoice.to)}</p>
                     </div>
                 </div>
                 <div className="invoice-preview-row">
@@ -94,11 +96,11 @@ class InvoicePreivew extends React.Component {
                 <div className="invoice-preview-row">
                     <div className="notes">
                         <span className="label">Notes :</span>
-                        <p className="text">{this.invoice.notes}</p>
+                        <p className="text">{validator.unescape(this.invoice.notes)}</p>
                     </div>
                     <div className="terms">
                         <span className="label">Terms :</span>
-                        <p className="text">{this.invoice.terms}</p>
+                        <p className="text">{validator.unescape(this.invoice.terms)}</p>
                     </div>
                 </div>
                 <div className="invoice-preview-row stub-preview-row">
@@ -106,7 +108,7 @@ class InvoicePreivew extends React.Component {
                     <h1 className="stub-header">payment stub</h1>
                     <div className="address from">
                         <span className="label">From :</span>
-                        <p className="text">{this.invoice.from}</p>
+                        <p className="text">{validator.unescape(this.invoice.from)}</p>
                     </div>
                     <div className="invoice-meta-info">
                         <div className="meta-row">
