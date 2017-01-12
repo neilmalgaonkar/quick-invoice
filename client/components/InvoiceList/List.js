@@ -4,6 +4,8 @@ import { Link } from 'react-router'
 
 import InvoiceRow from './InvoiceRow'
 
+import listStyles from './list.styl'
+
 class List extends React.Component {
     constructor(props) {
         super(props)
