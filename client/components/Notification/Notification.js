@@ -1,5 +1,7 @@
 import React from 'react'
 
+import notificationStyle from './_notification.styl'
+
 class Notification extends React.Component
 {
     constructor(props) {
