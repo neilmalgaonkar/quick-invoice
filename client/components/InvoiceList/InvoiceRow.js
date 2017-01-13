@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router'
 
-import { formattedDate, invoiceStatus } from './../utils'
+import { formattedDate, invoiceStatus } from './../../utils'
 
 class InvoiceRow extends React.Component
 {

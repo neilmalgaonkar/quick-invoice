@@ -11,14 +11,14 @@ import css from './styles/style.styl';
 import store, { history } from './store'
 
 import App from './components/App';
-import List from './components/List'
-import InvoiceContainer from './components/InvoiceContainer'
+import ListContainer from './containers/ListContainer'
+import InvoiceContainer from './containers/InvoiceContainer'
 
 render((
    <Provider store={store}>
         <Router history={history}>
             <Route path="/" component={App}>
-                <IndexRoute component={List}></IndexRoute>
+                <IndexRoute component={ListContainer}></IndexRoute>
                 <Route path="/new/:invoiceid" component={InvoiceContainer}></Route>
                 <Route path="/invoice/:invoiceid" component={InvoiceContainer}></Route>
             </Route>

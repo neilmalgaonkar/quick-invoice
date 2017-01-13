@@ -1,5 +1,5 @@
 import React from 'react'
-import { formattedDate } from './../utils'
+import { formattedDate, adjustDecimal } from './../../utils'
 
 import validator from 'validator'
 
@@ -7,7 +7,7 @@ class InvoicePreivew extends React.Component {
     constructor(props) {
         super(props);
         this.invoice = this.props.invoice
-        this.entries = this.props.invoiceEntries
+        this.entries = this.props.entries
     }
 
     renderEntries() {
@@ -17,7 +17,7 @@ class InvoicePreivew extends React.Component {
                     <div className="col-item td"><span className="td-span">{validator.unescape(entry.description)}</span></div>
                     <div className="col-quantity td"><span className="td-span">{entry.quantity} hrs</span></div>
                     <div className="col-rate td"><div className="currency-cont">{entry.rate}<span className="currency">{this.invoice.currency}</span></div></div>
-                    <div className="col-amount td"><div className="currency-cont">{entry.amount}<span className="currency">{this.invoice.currency}</span></div></div>
+                    <div className="col-amount td"><div className="currency-cont">{adjustDecimal(entry.amount)}<span className="currency">{this.invoice.currency}</span></div></div>
                 </div>
             )
         })
@@ -57,7 +57,7 @@ class InvoicePreivew extends React.Component {
                         </div>
                         <div className="meta-row bg">
                             <div className="col1"><p className="text"><b>Balance Due</b></p></div><
-                            div className="col2"><p className="text">{this.invoice.total} {this.invoice.currency}</p></div>
+                            div className="col2"><p className="text">{adjustDecimal(this.invoice.total)} {this.invoice.currency}</p></div>
                         </div>
                     </div>
                 </div>
@@ -76,7 +76,7 @@ class InvoicePreivew extends React.Component {
                         <div className="invoice-meta-info">
                             <div className="meta-row">
                                 <div className="col1"><p className="text">Subtotal</p></div><
-                                div className="col2"><p className="text">{this.invoice.subtotal} {this.invoice.currency}</p></div>
+                                div className="col2"><p className="text">{adjustDecimal(this.invoice.subtotal)} {this.invoice.currency}</p></div>
                             </div>
                             <div className="meta-row">
                                 <div className="col1"><p className="text">Tax</p></div><
@@ -88,7 +88,7 @@ class InvoicePreivew extends React.Component {
                             </div>
                             <div className="meta-row">
                                 <div className="col1"><p className="text">Total</p></div><
-                                div className="col2"><p className="text">{this.invoice.total} {this.invoice.currency}</p></div>
+                                div className="col2"><p className="text">{adjustDecimal(this.invoice.total)} {this.invoice.currency}</p></div>
                             </div>
                         </div>
                     </div>
@@ -125,7 +125,7 @@ class InvoicePreivew extends React.Component {
                         </div>
                         <div className="meta-row bg">
                             <div className="col1"><p className="text"><b>Balance Due</b></p></div><
-                            div className="col2"><p className="text">{this.invoice.total} {this.invoice.currency}</p></div>
+                            div className="col2"><p className="text">{adjustDecimal(this.invoice.total)} {this.invoice.currency}</p></div>
                         </div>
                     </div>
                 </div>

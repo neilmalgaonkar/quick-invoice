@@ -26,3 +26,23 @@ export function invoiceStatus(status) {
     }
     return status
 }
+
+export function adjustDecimal(number, uptoDecimal = 2) {
+    let parsedNumber = parseFloat(number)
+    let parsedUptoDecimal = parseInt(uptoDecimal)
+    if(number === undefined || isNaN(parsedNumber)) {
+        return number
+    }
+
+    if(isNaN(parsedUptoDecimal)) {
+        parsedUptoDecimal = 2;
+    }
+
+    number = number.toString()
+    let splitNumberArr = number.split('.', 2)
+    let decimal = "00";
+    if(splitNumberArr.length > 1) {
+        decimal = splitNumberArr[1].toString().slice(0, 2)
+    }
+    return splitNumberArr[0] + "." + decimal;
+}

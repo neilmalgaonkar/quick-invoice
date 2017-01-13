@@ -3,6 +3,8 @@ import React from 'react'
 import _ from 'lodash'
 import validator from 'validator'
 
+import { adjustDecimal } from './../../utils'
+
 import LabelInputField from './LabelInputField'
 
 class Entry extends React.Component {
@@ -48,7 +50,7 @@ class Entry extends React.Component {
                     </div>
                     <div className="td col-amount">
                         <label className="field-label">Amount</label>
-                        <div className="currency-cont">{this.props.entry.amount}<span className="currency">{this.props.invoice.currency}</span></div>
+                        <div className="currency-cont">{adjustDecimal(this.props.entry.amount)}<span className="currency">{this.props.invoice.currency}</span></div>
                         </div>
                 </div>
             </div>

@@ -1,9 +1,9 @@
 import React from 'react'
 
 import Entry from './Entry';
-import LabelInputField from './LabelInputField'
+import LabelInputField from './../UI/LabelInputField'
 
-class Entries extends React.Component {
+class EntryList extends React.Component {
     constructor(props) {
         super(props)
     }
@@ -71,4 +71,4 @@ class Entries extends React.Component {
     }
 }
 
-export default Entries;
+export default EntryList;
