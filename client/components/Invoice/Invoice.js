@@ -8,10 +8,12 @@ import { Link } from 'react-router'
 import Moment from 'moment'
 
 import DatePicker from 'react-datepicker'
-import Entries from './Entries'
-import Entry from './Entry'
-import InvoicePreview from './InvoicePreview'
-import LabelInputField from './LabelInputField'
+import EntriesContainer from './../../containers/EntriesContainer'
+import Entry from './../Entries/Entry'
+import InvoicePreviewContainer from './../../containers/InvoicePreviewContainer'
+import LabelInputField from './../UI/LabelInputField'
+
+import { adjustDecimal } from './../../utils'
 
 class Invoice extends React.Component
 {
@@ -101,7 +103,7 @@ class Invoice extends React.Component
     previewInvoice(e) {
         e.preventDefault()
         this.props.toggleOverlay()
-        ReactDOM.render(<InvoicePreview {...this.props}/>, document.getElementById('popup-container'))
+        ReactDOM.render(<InvoicePreviewContainer store={this.context.store} invoice={this.props.invoice} entries={this.props.invoiceEntries}/>, document.getElementById('popup-container'))
     }
 
     addEntry(entry) {
@@ -218,7 +220,8 @@ class Invoice extends React.Component
     }
 
     _gatherFormData() {
-        let entriesCont = this.refs.entriesCont.refs
+        // let entriesCont = this.refs.entriesCont.refs.entriesList
+        let entriesCont = this.childRef.refs
         let discount = entriesCont.discountRef.refs.labelField.value
         let tax = entriesCont.taxRef.refs.labelField.value
         let totalAmount = this._total(this.entries, tax, discount)
@@ -255,7 +258,7 @@ class Invoice extends React.Component
         let amount = entries.reduce((totalAmount, entry) => {
             return totalAmount + entry.amount
         }, 0)
-        return amount
+        return adjustDecimal(amount)
     }
 
     _total(entries, tax, discount) {
@@ -264,7 +267,7 @@ class Invoice extends React.Component
         let discountedAmount = amount - calcDiscount
         let taxAmount = (discountedAmount * tax) / 100
         let finalAmount = taxAmount + discountedAmount
-        return finalAmount
+        return adjustDecimal(finalAmount)
     }
 
     render() {
@@ -358,7 +361,7 @@ class Invoice extends React.Component
                             </div>
                         </div>
                         <div className="invoice-entries">
-                            <Entries ref="entriesCont" {...this.props} subtotal={this.state.invoice.subtotal} total={this.state.invoice.total} invoice={this.state.invoice} invoiceEntries={this.state.invoiceEntries} addEntry={this.addEntry.bind(this)} updateEntry={this.updateEntry.bind(this)} removeEntry={this.removeEntry.bind(this)}/>
+                            <EntriesContainer ref="entriesCont" childRef={component => this.childRef = component } subtotal={this.state.invoice.subtotal} total={this.state.invoice.total} invoice={this.state.invoice} invoiceEntries={this.state.invoiceEntries} addEntry={this.addEntry.bind(this)} updateEntry={this.updateEntry.bind(this)} removeEntry={this.removeEntry.bind(this)}/>
                         </div>
                         <div className="invoice-info-footer">
                             <div className="field-grp">
@@ -408,6 +411,10 @@ Invoice.defaultProps = {
         status: "draft"
     },
     invoiceEntries: [Entry.defaultProps]
+}
+
+Invoice.contextTypes = {
+    store: React.PropTypes.object.isRequired
 }
 
 export default Invoice

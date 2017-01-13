@@ -12,7 +12,7 @@ import store, { history } from './store'
 
 import App from './components/App';
 import ListContainer from './containers/ListContainer'
-import InvoiceContainer from './components/InvoiceContainer'
+import InvoiceContainer from './containers/InvoiceContainer'
 
 render((
    <Provider store={store}>
