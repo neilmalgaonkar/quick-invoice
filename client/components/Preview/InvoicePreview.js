@@ -3,6 +3,8 @@ import { formattedDate, adjustDecimal } from './../../utils'
 
 import validator from 'validator'
 
+import previewStyles from './invoice_preview.styl'
+
 class InvoicePreivew extends React.Component {
     constructor(props) {
         super(props);

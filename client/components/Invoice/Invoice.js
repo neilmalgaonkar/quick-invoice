@@ -15,6 +15,8 @@ import LabelInputField from './../UI/LabelInputField'
 
 import { adjustDecimal } from './../../utils'
 
+import invoiceStyles from './invoice.styl'
+
 class Invoice extends React.Component
 {
     constructor(props) {

@@ -3,6 +3,8 @@ import React from 'react'
 import Entry from './Entry';
 import LabelInputField from './../UI/LabelInputField'
 
+import listStyles from './entries.styl'
+
 class EntryList extends React.Component {
     constructor(props) {
         super(props)
