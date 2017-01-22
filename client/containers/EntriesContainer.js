@@ -19,7 +19,9 @@ class EntriesContainer extends React.Component {
                 addEntry={this.props.addEntry}
                 updateEntry={this.props.updateEntry}
                 removeEntry={this.props.removeEntry}
-                ref={this.props.childRef} />
+                reorderEntries={this.props.reorderEntries}
+                ref={this.props.childRef}
+                invoiceId={this.props.invoiceId}/>
         )
     }
 }
@@ -30,7 +32,8 @@ const mapStatesToProps = (state, ownProps) => {
         total: ownProps.total,
         invoice: ownProps.invoice,
         invoiceEntries: ownProps.invoiceEntries,
-        entriesCont: ownProps.entriesCont
+        entriesCont: ownProps.entriesCont,
+        invoiceId: ownProps.invoiceId
     }
 }
 
@@ -46,7 +49,8 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
         childRef: ownProps.childRef,
         addEntry: ownProps.addEntry,
         updateEntry: ownProps.updateEntry,
-        removeEntry: ownProps.removeEntry
+        removeEntry: ownProps.removeEntry,
+        reorderEntries: ownProps.reorderEntries
     }
 }
 

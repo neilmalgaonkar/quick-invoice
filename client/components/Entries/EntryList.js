@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 
 import Entry from './Entry';
 import LabelInputField from './../UI/LabelInputField'
@@ -17,7 +17,12 @@ class EntryList extends React.Component {
     addItem(e) {
         if(e !== undefined)
             e.preventDefault()
-        this.props.addEntry(Entry.defaultProps);
+        this.props.addEntry({
+            description: "",
+            quantity: 0,
+            rate: 0,
+            amount: 0
+        });
     }
 
     removeItem(e) {
@@ -25,12 +30,13 @@ class EntryList extends React.Component {
     }
 
     renderEntries() {
-        return this.props.invoiceEntries.map((entry, index) => <Entry key={index} index={index} entry={entry} {...this.props}/>)
+        return this.props.invoiceEntries.map((entry, index) => {
+            return (<Entry key={index} index={index} entry={entry} {...this.props} invoiceId={this.props.invoiceId} reorderEntries={this.props.reorderEntries}/>)
+        })
     }
 
     render() {
-        return(
-            <div className="entries-cont">
+        return (<div className="entries-cont">
                 <div className="entries-table">
                     <div className="table-header">
                         <span className="th col-item">Item</span>
@@ -68,8 +74,7 @@ class EntryList extends React.Component {
                         </div>
                     </div>
                 </div>
-            </div>
-        );
+            </div>);
     }
 }
 
