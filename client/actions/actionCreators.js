@@ -51,6 +51,15 @@ export function saveInvoice(invoice, entries, invoiceid) {
     }
 }
 
+export function reorderEntries(invoiceid, oldEntryIndex, newEntryIndex) {
+    return {
+        type: 'REORDER_ENTRIES',
+        invoiceid,
+        oldEntryIndex,
+        newEntryIndex
+    }
+}
+
 // export function addEntry(entry, invoiceid) {
 //     return {
 //         type: 'ADD_ENTRY',

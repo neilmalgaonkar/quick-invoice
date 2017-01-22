@@ -55,6 +55,40 @@
         top 50%
         margin-top -1.1rem
 
+    .item-description-cont
+        position relative
+        padding-left 2rem
+
+        .dnd-marker-cont
+            position absolute
+            width 2rem
+            left 0
+            height 4.4rem
+            cursor move
+
+            .dnd-marker
+                position relative
+                width .4rem
+                height .4rem
+                border-radius(100%)
+                background-color #444
+                top 50%
+                left 50%
+                translateXY(-50%, -50%)
+
+            .up-dot
+            .bottom-dot
+                position absolute
+                background-color #444
+                width .4rem
+                height .4rem
+                border-radius(100%)
+
+            .up-dot
+                margin-top -1rem
+
+            .bottom-dot
+                margin-top 1rem
 .entries-cont
     clearfix()
 
@@ -128,6 +162,11 @@
             width 100%
             display inline-block
             padding .8rem 0
+
+        .item-description-cont
+            padding-left 0
+            .dnd-marker-cont
+                display none
 
         .item-field-col
             display inline-block

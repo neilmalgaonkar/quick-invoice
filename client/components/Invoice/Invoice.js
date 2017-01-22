@@ -1,6 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+import update from 'react/lib/update';
+
 import _ from 'lodash'
 import validator from 'validator'
 
@@ -128,6 +130,17 @@ class Invoice extends React.Component
             ]
             this.saveInvoice()
         }
+    }
+
+    reorderEntries(invoiceId, oldEntryIndex, newEntryIndex) {
+        let moveEntry = this.entries[oldEntryIndex]
+        this.entries = update(this.entries, {
+            $splice: [
+                [oldEntryIndex, 1],
+                [newEntryIndex, 0, moveEntry]
+            ]
+        })
+        this.saveInvoice()
     }
 
     handleDateChange(label, date) {
@@ -258,7 +271,8 @@ class Invoice extends React.Component
             return 0
         }
         let amount = entries.reduce((totalAmount, entry) => {
-            return totalAmount + entry.amount
+            let amount = (entry === undefined) ? 0 : entry.amount
+            return totalAmount + amount
         }, 0)
         return adjustDecimal(amount)
     }
@@ -363,7 +377,7 @@ class Invoice extends React.Component
                             </div>
                         </div>
                         <div className="invoice-entries">
-                            <EntriesContainer ref="entriesCont" childRef={component => this.childRef = component } subtotal={this.state.invoice.subtotal} total={this.state.invoice.total} invoice={this.state.invoice} invoiceEntries={this.state.invoiceEntries} addEntry={this.addEntry.bind(this)} updateEntry={this.updateEntry.bind(this)} removeEntry={this.removeEntry.bind(this)}/>
+                            <EntriesContainer ref="entriesCont" childRef={component => this.childRef = component } subtotal={this.state.invoice.subtotal} total={this.state.invoice.total} invoice={this.state.invoice} invoiceEntries={this.state.invoiceEntries} addEntry={this.addEntry.bind(this)} updateEntry={this.updateEntry.bind(this)} removeEntry={this.removeEntry.bind(this)} invoiceId={this.props.invoiceid} reorderEntries={this.reorderEntries.bind(this)}/>
                         </div>
                         <div className="invoice-info-footer">
                             <div className="field-grp">

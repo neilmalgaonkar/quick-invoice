@@ -10,7 +10,7 @@ class LabelInputField extends React.Component {
         return (
             <div className={"input-field-cont " + this.props.position + ' ' + this.props.contClass}>
                 <span className="input-label">{this.props.labelText}</span>
-                <input ref="labelField" type={this.props.fieldType} className={"input " + this.props.fieldClass} defaultValue={this.props.value} onChange={this.props.fieldChangeCallback}/>
+                <input ref="labelField" type={this.props.fieldType} className={"input " + this.props.fieldClass} value={this.props.value} onChange={this.props.fieldChangeCallback}/>
             </div>
         );
     }

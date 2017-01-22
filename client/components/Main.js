@@ -1,6 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+import { DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
+
 import { Link } from 'react-router'
 
 import NotificationContainer from './../containers/NotificationContainer'
@@ -30,4 +33,4 @@ class Main extends React.Component {
     }
 }
 
-export default Main;
+export default DragDropContext(HTML5Backend)(Main);
