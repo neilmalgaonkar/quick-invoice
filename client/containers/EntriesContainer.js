@@ -3,6 +3,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
+import { addEntry, updateEntry, removeEntry, reorderEntries } from './../actions/actionCreators'
+
 import EntryList from './../components/Entries/EntryList'
 
 class EntriesContainer extends React.Component {
@@ -21,7 +23,8 @@ class EntriesContainer extends React.Component {
                 removeEntry={this.props.removeEntry}
                 reorderEntries={this.props.reorderEntries}
                 ref={this.props.childRef}
-                invoiceId={this.props.invoiceId}/>
+                invoiceId={this.props.invoiceId}
+                saveInvoice={this.props.saveInvoice}/>
         )
     }
 }
@@ -37,8 +40,12 @@ const mapStatesToProps = (state, ownProps) => {
     }
 }
 
-const mapDispatchToActions = (dispatch, ownProps) => {
+const mapDispatchToActions = (dispatch) => {
     return bindActionCreators({
+        addEntry,
+        updateEntry,
+        removeEntry,
+        reorderEntries
     }, dispatch)
 }
 
@@ -47,10 +54,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
         ...stateProps,
         ...dispatchProps,
         childRef: ownProps.childRef,
-        addEntry: ownProps.addEntry,
-        updateEntry: ownProps.updateEntry,
-        removeEntry: ownProps.removeEntry,
-        reorderEntries: ownProps.reorderEntries
+        saveInvoice: ownProps.saveInvoice
     }
 }
 

@@ -37,8 +37,6 @@ class Invoice extends React.Component
             incoice: props.invoice.invoiceDueDate
         }
 
-        this.entries = (props.invoiceEntries === undefined) ? [] : props.invoiceEntries
-
         let defaultLogoData = {
             path: "",
             width: 0,
@@ -70,6 +68,18 @@ class Invoice extends React.Component
         })
     }
 
+    componentDidMount() {
+        // console.log(this.state.invoiceEntries)
+        if(!this.state.invoiceEntries.length) {
+            this.props.addEntry(this.props.invoiceid, {
+                description: "",
+                quantity: 0,
+                rate: 0,
+                amount: 0
+            })
+        }
+    }
+
     autoStore() {
         this.storeInvoice()
     }
@@ -82,65 +92,32 @@ class Invoice extends React.Component
     }
 
     storeInvoice() {
-        let {invoice, entries} = this._gatherFormData()
+        let {invoice} = this._gatherFormData()
         this.hasFormModified = false
         this.setState({
             ui: {
                 invoiceModified: false
             }
         })
-        this.props.storeInvoice(invoice, entries, this.props.invoiceid)
+        this.props.storeInvoice(invoice, this.props.invoiceEntries, this.props.invoiceid)
         this.props.showAutosaveNotification()
     }
 
     saveInvoice() {
-        let {invoice, entries} = this._gatherFormData()
+        let {invoice} = this._gatherFormData()
         this.hasFormModified = true
         this.setState({
             ui: {
                 invoiceModified: true
             }
         })
-        this.props.saveInvoice(invoice, entries, this.props.invoiceid)
+        this.props.saveInvoice(invoice, this.props.invoiceid)
     }
 
     previewInvoice(e) {
         e.preventDefault()
         this.props.toggleOverlay()
         ReactDOM.render(<InvoicePreviewContainer store={this.context.store} invoice={this.props.invoice} entries={this.props.invoiceEntries}/>, document.getElementById('popup-container'))
-    }
-
-    addEntry(entry) {
-        this.entries.push(entry)
-        this.saveInvoice()
-    }
-
-    updateEntry(updatedEntry, entryIndex) {
-        if(this.entries[entryIndex] !== undefined) {
-            this.entries = this.entries.map((entry, index) => index == entryIndex ? updatedEntry : entry)
-            this.saveInvoice()
-        }
-    }
-
-    removeEntry(entryIndex) {
-        if(this.entries[entryIndex] !== undefined) {
-            this.entries = [
-                ...this.entries.splice(0, entryIndex),
-                ...this.entries.splice(entryIndex + 1)
-            ]
-            this.saveInvoice()
-        }
-    }
-
-    reorderEntries(invoiceId, oldEntryIndex, newEntryIndex) {
-        let moveEntry = this.entries[oldEntryIndex]
-        this.entries = update(this.entries, {
-            $splice: [
-                [oldEntryIndex, 1],
-                [newEntryIndex, 0, moveEntry]
-            ]
-        })
-        this.saveInvoice()
     }
 
     handleDateChange(label, date) {
@@ -191,24 +168,6 @@ class Invoice extends React.Component
         }, 2000)
     }
 
-    _hasFormModified() {
-        let { invoice, entries } = this._gatherFormData()
-        let currentInvoice = {
-            ...invoice,
-            'entries': entries
-        }
-        let propsInvoice = {
-            ...this.props.invoice,
-            'entries': this.props.invoiceEntries
-        }
-        let serializedInvoice = JSON.stringify(currentInvoice);
-        let propsSerializedInvoice = JSON.stringify(propsInvoice)
-        if(serializedInvoice === propsSerializedInvoice) {
-            return false
-        }
-        return true
-    }
-
     _resize(image) {
         let imgWidth = image.width
         let imgHeight = image.height
@@ -235,11 +194,10 @@ class Invoice extends React.Component
     }
 
     _gatherFormData() {
-        // let entriesCont = this.refs.entriesCont.refs.entriesList
         let entriesCont = this.childRef.refs
         let discount = entriesCont.discountRef.refs.labelField.value
         let tax = entriesCont.taxRef.refs.labelField.value
-        let totalAmount = this._total(this.entries, tax, discount)
+        let totalAmount = this._total(this.props.invoiceEntries, tax, discount)
 
         let invoice = {
             invoiceNo: this.refs.invoiceNoRef.refs.labelField.value,
@@ -247,7 +205,7 @@ class Invoice extends React.Component
             currency: this.refs.currency.value,
             tax: entriesCont.taxRef.refs.labelField.value,
             discount: entriesCont.discountRef.refs.labelField.value,
-            subtotal: this._subTotal(this.entries),
+            subtotal: this._subTotal(this.props.invoiceEntries),
             total: totalAmount,
             invoiceDate: this.dates.invoiceDate,
             invoiceDueDate: this.dates.invoiceDueDate,
@@ -258,11 +216,8 @@ class Invoice extends React.Component
             logo: this.logo
         }
 
-        let entries = this.entries;
-
         return {
-            invoice,
-            entries
+            invoice
         }
     }
 
@@ -271,7 +226,7 @@ class Invoice extends React.Component
             return 0
         }
         let amount = entries.reduce((totalAmount, entry) => {
-            let amount = (entry === undefined) ? 0 : entry.amount
+            let amount = (entry === undefined) ? 0 : ((entry.amount === undefined) ? 0 : entry.amount)
             return totalAmount + amount
         }, 0)
         return adjustDecimal(amount)
@@ -296,7 +251,7 @@ class Invoice extends React.Component
                 <div className="invoice-tool-bar">
                     <div className="invoice-tool-bar-cont">
                         <button className="button preview-invoice " onClick={this.previewInvoice.bind(this)}>Preview</button>
-                        <button className={`button save-invoice ${(this.state.ui.invoiceModified) ? '' : 'disable'}`} type="submit">Save Invoice</button>
+                        <button className={`button save-invoice ${(this.state.ui.invoiceModified) ? '' : 'disable'}`} type="button" onClick={this.onSubmitInvoice.bind(this)}>Save Invoice</button>
                         <button className={`button download-invoice ${(this.state.ui.invoiceModified) ? 'disable' : ''}`} onClick={(e) => {
                             if(!this.state.ui.invoiceModified)
                                 this.downloadPdf.bind(this)()
@@ -377,7 +332,7 @@ class Invoice extends React.Component
                             </div>
                         </div>
                         <div className="invoice-entries">
-                            <EntriesContainer ref="entriesCont" childRef={component => this.childRef = component } subtotal={this.state.invoice.subtotal} total={this.state.invoice.total} invoice={this.state.invoice} invoiceEntries={this.state.invoiceEntries} addEntry={this.addEntry.bind(this)} updateEntry={this.updateEntry.bind(this)} removeEntry={this.removeEntry.bind(this)} invoiceId={this.props.invoiceid} reorderEntries={this.reorderEntries.bind(this)}/>
+                            <EntriesContainer ref="entriesCont" childRef={component => this.childRef = component } subtotal={this._subTotal(this.props.invoiceEntries)} total={this._total(this.props.invoiceEntries, this.state.invoice.tax, this.state.invoice.discount)} invoice={this.state.invoice} saveInvoice={this.saveInvoice.bind(this)} invoiceEntries={this.state.invoiceEntries} invoiceId={this.props.invoiceid} />
                         </div>
                         <div className="invoice-info-footer">
                             <div className="field-grp">
@@ -426,7 +381,7 @@ Invoice.defaultProps = {
         total: 0,
         status: "draft"
     },
-    invoiceEntries: [Entry.defaultProps]
+    invoiceEntries: []
 }
 
 Invoice.contextTypes = {

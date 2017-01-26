@@ -26,6 +26,7 @@ const entryDragSourceSpec = {
         let dropResult = monitor.getDropResult()
         if(dropResult !== null) {
             props.reorderEntries(props.invoiceId, dropResult.oldEntryIndex, dropResult.newEntryIndex)
+            props.saveInvoice()
         }
     },
     isDragging: function(props, monitor) {
@@ -67,9 +68,9 @@ const entryDropTargetSpec = {
         if(dragEntryIndex < currentEntryIndex && dragSwapHeight <= hoverSwapHeight) {
             return
         }
-
-        props.reorderEntries(props.invoiceId, dragEntryIndex, currentEntryIndex)
         monitor.getItem().index = currentEntryIndex
+        props.reorderEntries(props.invoiceId, dragEntryIndex, currentEntryIndex)
+        //props.saveInvoice()
     }
 }
 
@@ -86,7 +87,8 @@ class Entry extends React.Component {
 
     remove(e) {
         e.preventDefault()
-        this.props.removeEntry(this.props.index)
+        this.props.removeEntry(this.props.invoiceId, this.props.index)
+        this.props.saveInvoice()
     }
 
     updateEntry() {
@@ -100,13 +102,17 @@ class Entry extends React.Component {
             quantity: quantity,
             amount: amount
         }
-        this.props.updateEntry(entry, index);
+        this.props.updateEntry(this.props.invoiceId, entry, index);
+    }
+
+    updateField(e) {
+        this.updateEntry()
     }
 
     render(){
         const { connectDragSource, connectDropTarget, isDragging } = this.props
         return connectDropTarget(connectDragSource(
-            <div className="table-row">
+            <div className={`table-row ${(isDragging) ? 'dragging' : ''}`}>
                 <div className="row-view-cont">
                     <div className="row-view">
                         <a href="" className="cls-btn" onClick={this.remove.bind(this)}>x</a>
@@ -114,16 +120,16 @@ class Entry extends React.Component {
                             <label htmlFor={"description_" + this.props.index}className="field-label">Description</label>
                             <div className="item-description-cont">
                                 <div className="dnd-marker-cont"><div className="dnd-marker"><span className="up-dot"></span><span className="bottom-dot"></span></div></div>
-                                <input type="text" ref={"description_" + this.props.index} placeholder="Item description" value={validator.unescape(this.props.entry.description)} onChange={this.updateEntry.bind(this)}/>
+                                <input type="text" ref={"description_" + this.props.index} placeholder="Item description" value={validator.unescape(this.props.entry.description)} onChange={this.updateField.bind(this)}/>
                             </div>
                         </div>
                         <div className="td col-quantity">
                             <label htmlFor={"quantity_" + this.props.index}className="field-label">Quantity</label>
-                            <LabelInputField ref={"quantityRef_" + this.props.index} position="right" labelText={this.props.invoice.quantity} contClass="entry-quantity-cont-field" value={this.props.entry.quantity} labelText="hrs" fieldChangeCallback={this.updateEntry.bind(this)}/>
+                            <LabelInputField ref={"quantityRef_" + this.props.index} position="right" labelText={this.props.invoice.quantity} contClass="entry-quantity-cont-field" value={this.props.entry.quantity} labelText="hrs" fieldChangeCallback={this.updateField.bind(this)}/>
                         </div>
                         <div className="td col-rate">
                             <label htmlFor={"rate_" + this.props.index}className="field-label">Rate</label>
-                            <LabelInputField ref={"rateRef_" + this.props.index} position="right" labelText={this.props.invoice.currency} contClass="entry-rate-cont-field" value={this.props.entry.rate} fieldChangeCallback={this.updateEntry.bind(this)}/>
+                            <LabelInputField ref={"rateRef_" + this.props.index} position="right" labelText={this.props.invoice.currency} contClass="entry-rate-cont-field" value={this.props.entry.rate} fieldChangeCallback={this.updateField.bind(this)}/>
                         </div>
                         <div className="td col-amount">
                             <label className="field-label">Amount</label>

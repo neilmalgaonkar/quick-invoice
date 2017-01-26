@@ -15,14 +15,14 @@ class EntryList extends React.Component {
     }
 
     addItem(e) {
-        if(e !== undefined)
-            e.preventDefault()
-        this.props.addEntry({
+        e.preventDefault()
+        this.props.addEntry(this.props.invoiceId, {
             description: "",
             quantity: 0,
             rate: 0,
             amount: 0
-        });
+        })
+        this.props.saveInvoice()
     }
 
     removeItem(e) {
@@ -31,7 +31,7 @@ class EntryList extends React.Component {
 
     renderEntries() {
         return this.props.invoiceEntries.map((entry, index) => {
-            return (<Entry key={index} index={index} entry={entry} {...this.props} invoiceId={this.props.invoiceId} reorderEntries={this.props.reorderEntries}/>)
+            return (<Entry key={index} index={index} entry={entry} {...this.props} invoiceId={this.props.invoiceId} updateEntry={this.props.updateEntry} removeEntry={this.props.removeEntry} reorderEntries={this.props.reorderEntries} saveInvoice={this.props.saveInvoice}/>)
         })
     }
 

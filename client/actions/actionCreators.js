@@ -42,12 +42,36 @@ function storeObjectLocally(key, data, dataIndex) {
     }
 }
 
-export function saveInvoice(invoice, entries, invoiceid) {
+export function saveInvoice(invoice, invoiceid) {
     return {
         type: 'SAVE_INVOICE',
         invoice,
-        entries,
         invoiceid
+    }
+}
+
+export function addEntry(invoiceid, entry) {
+    return {
+        type: 'ADD_ENTRY',
+        entry,
+        invoiceid
+    };
+}
+
+export function updateEntry(invoiceid, entry, index) {
+    return {
+        type: 'UPDATE_ENTRY',
+        invoiceid,
+        entry,
+        index
+    }
+}
+
+export function removeEntry(invoiceid, index) {
+    return {
+        type: 'REMOVE_ENTRY',
+        invoiceid,
+        index
     }
 }
 
@@ -59,31 +83,6 @@ export function reorderEntries(invoiceid, oldEntryIndex, newEntryIndex) {
         newEntryIndex
     }
 }
-
-// export function addEntry(entry, invoiceid) {
-//     return {
-//         type: 'ADD_ENTRY',
-//         entry,
-//         invoiceid
-//     };
-// }
-
-// export function updateEntry(invoiceid, entry, index) {
-//     return {
-//         type: 'UPDATE_ENTRY',
-//         invoiceid,
-//         entry,
-//         index
-//     }
-// }
-
-// export function removeEntry(invoiceid, index) {
-//     return {
-//         type: 'REMOVE_ENTRY',
-//         invoiceid,
-//         index
-//     }
-// }
 
 export function toggleOverlay() {
     return {
