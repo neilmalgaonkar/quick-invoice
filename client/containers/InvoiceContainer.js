@@ -9,7 +9,7 @@ import Invoice from './../components/Invoice/Invoice'
 
 const InvoiceContainer = (props) => {
     return (
-        <Invoice invoice={props.invoice} invoiceEntries={props.invoiceEntries} invoiceid={props.invoiceid} toggleOverlay={props.toggleOverlay} hideAutosaveNotification={props.hideAutosaveNotification} saveInvoice={props.saveInvoice} storeInvoice={props.storeInvoice} showAutosaveNotification={props.showAutosaveNotification} ui={props.ui} />
+        <Invoice invoice={props.invoice} invoiceEntries={props.invoiceEntries} invoiceid={props.invoiceid} toggleOverlay={props.toggleOverlay} hideAutosaveNotification={props.hideAutosaveNotification} saveInvoice={props.saveInvoice} storeInvoice={props.storeInvoice} addEntry={props.addEntry} showAutosaveNotification={props.showAutosaveNotification} ui={props.ui} />
     )
 }
 
